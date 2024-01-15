@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -9,15 +8,16 @@ import (
 )
 
 type Claims struct {
+	Id    string
 	Email string
 	Role  string
 	jwt.StandardClaims
 }
 
-func GenerateToken(email, role string, cfg string) (string, error) {
+func GenerateToken(email, role, id string, cfg string) (string, error) {
 	expireTime := time.Now().Add(time.Minute * 20).Unix()
-	fmt.Println(email, role)
 	claims := &Claims{
+		Id:    id,
 		Email: email,
 		Role:  role,
 		StandardClaims: jwt.StandardClaims{
