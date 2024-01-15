@@ -8,15 +8,54 @@ service User {
     rpc UserLoginRequest(UserLogin) returns (UserLoginResponce);
     rpc UserSignupRequest(Signup) returns(SignupResponce);
     rpc UserSignupVerifyRequest(Verify)returns(VerifyResponce);
+    rpc UserViewPackage(ViewPackage)returns(ViewPacakgeResponce);
+    rpc ForgetPassword(forgetPassword)returns(forgetPasswordResponce);
+    rpc ForgetPasswordVerify(forgetPasswordVerify)returns(forgetPasswordVerifyResponce);
+    rpc NewPassword(newpassword)returns(newpasswordresponce);
 }
 
-message UserLogin{
-    string email = 1;
-    string password = 2;
-    string role = 3;
+message newpasswordresponce{
+    string status = 1;
 }
 
-message Package{
+message newpassword{
+    string newpassword = 1;
+    string Id = 2;
+}
+
+message forgetPasswordVerifyResponce{
+    string status = 1;
+    string token = 2;
+}
+
+message forgetPasswordVerify{
+    string otp = 1;
+    string phone = 2;
+}
+
+message forgetPasswordResponce{
+    string Responce = 1;
+}
+
+message forgetPassword{
+    string phone =1;
+}
+
+message usrCategory{
+    string categoryName = 1;
+}
+
+message usrDestinations{
+    string DestinationName = 1;
+    string Description = 2;
+    int64 PackageID = 3;
+    int64 MinPrice = 4;
+    int64 MaxCapacity = 5;
+    string Image = 6;
+    int32 DestinationId = 7;
+}
+
+message ViewPacakgeResponce{
     string name = 1;
     string startlocation = 2;
     string endlocation = 3;
@@ -26,10 +65,24 @@ message Package{
     string image = 7;
     int32  destinationCount = 8;
     string destination = 9;
+    int64  PackageId = 10;
+    string Description = 11;
+    usrCategory category = 12;
+    repeated usrDestinations Destinations = 13;
+}
+
+message ViewPackage{
+    int64 packageId = 1;
+}
+
+message UserLogin{
+    string email = 1;
+    string password = 2;
+    string role = 3;
 }
 
 message UserLoginResponce{
-    repeated Package Packages = 1;
+    repeated ViewPacakgeResponce Packages = 1;
     string            token = 2;
 }
 
@@ -38,6 +91,7 @@ message Signup{
     string email = 2;
     string phone = 3;
     string password = 4;
+    string role = 5;
 }
 
 message SignupResponce{
