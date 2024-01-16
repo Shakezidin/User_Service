@@ -8,32 +8,32 @@ import (
 	pb "github.com/Shakezidin/pkg/user/pb"
 )
 
-func (c *UserSVC) ViewPackageSvc(p *pb.ViewPackage) (*pb.ViewPacakgeResponce, error) {
+func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 	var ctxt = context.Background()
-	result, err := c.codClient.CoordinatorViewPackage(ctxt, &cpb.CoodinatorViewPackage{
-		PackageId: p.PackageId,
+	result, err := c.codClient.CoordinatorViewPackage(ctxt, &cpb.View{
+		Id: p.Id,
 	})
 	if err != nil {
 		fmt.Println("fetching available packages error")
-		return &pb.ViewPacakgeResponce{}, err
+		return nil, err
 	} else {
-		var dst pb.UsrDestinations
-		var dsts []*pb.UsrDestinations
+		var dst pb.UserDestination
+		var dsts []*pb.UserDestination
 		for _, pakg := range result.Destinations {
 			dst.Description = pakg.Description
 			dst.DestinationId = pakg.DestinationId
 			dst.DestinationName = pakg.DestinationName
 			dst.Image = pakg.Image
 			dst.MaxCapacity = pakg.MaxCapacity
-			dst.MinPrice = pakg.MinPrice
+			dst.Minprice = int64(pakg.Minprice)
 			dsts = append(dsts, &dst)
 
 		}
-		var catogry = &pb.UsrCategory{
+		var catogry = &pb.UserCategory{
 			CategoryName: result.Category.CategoryName,
 		}
-		return &pb.ViewPacakgeResponce{
-			Name:             result.Name,
+		return &pb.UserPackage{
+			Packagename:      result.Packagename,
 			Startlocation:    result.Startlocation,
 			Endlocation:      result.Endlocation,
 			Startdatetime:    result.Startdatetime,

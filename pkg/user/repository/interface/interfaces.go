@@ -8,4 +8,6 @@ type UserRepoInter interface {
 	FindUserByPhone(number int) (*DOM.User, error)
 	CreateUser(user *DOM.User) error
 	UpdatePassword(id uint, newpassword string) error 
+	FindUserById(id uint) (*DOM.User, error)
+	UpdateUser(user *DOM.User) error
 }

@@ -6,50 +6,64 @@ option go_package = ".";
 
 
 service Coordinator {
-    rpc AvailablePackages(AllPackages) returns (PackagesResponce);
-    rpc CoordinatorViewPackage(CoodinatorViewPackage)returns(Package);
+    rpc AvailablePackages(Packages) returns (PackagesResponce);
+    rpc CoordinatorViewPackage(View)returns(Package);
 }
 
-message CoodinatorViewPackage{
-    int64 packageId = 1;
+message View{
+    int64 Id = 1;
+}
+
+message Packages{
+
+}
+
+message PackagesResponce{
+    repeated Package Packages = 1;
 }
 
 message Category{
     string categoryName = 1;
 }
 
-message Destinations{
-    string DestinationName = 1;
-    string Description = 2;
-    int64 PackageID = 3;
-    int64 MinPrice = 4;
-    int64 MaxCapacity = 5;
-    string Image = 6;
-    int32 DestinationId = 7;
-}
-
 message Package{
-    string name = 1;
-    string startlocation = 2;
-    string endlocation = 3;
-    string startdatetime = 4;
-    string enddatetime = 5;
-    int32  price = 6;
-    string image = 7;
-    int32  destinationCount = 8;
-    string destination = 9;
-    int64 PackageId = 10;
-    string Description = 11;
-    Category category = 12;
-    repeated Destinations Destinations = 13;
+    int64  PackageId = 1;
+    string packagename = 2;
+    int64 CoorinatorId = 3;
+    string startlocation = 4;
+    string endlocation = 5;
+    string startdatetime = 6;
+    string enddatetime = 7;
+    int64  price = 8;
+    string image = 9;
+    int64  destinationCount = 10;
+    string destination = 11;
+    string Description = 12;
+    int64 maxCapacity = 13;
+    int64  categoryId = 14;  
+    Category category = 15;
+    repeated Destination Destinations = 16;
 }
 
-message AllPackages{
-
+message Destination{
+    int64 destinationId = 1;
+    string DestinationName = 2;
+    string Description = 3;
+    int64 minprice = 4;
+    int64 maxCapacity = 5;
+    string image = 6;
+    repeated Activity activity = 7;
+    int64 PackageID = 8;
 }
 
-message PackagesResponce{
-    repeated Package Packages = 1;
-    string            token = 2;
+message Activity{
+    int64 activityId = 1;
+    string activityname = 2;
+    string description = 3;
+    string Location = 4;
+    string ActivityType = 5;
+    int64 Amount = 6;
+    string date = 7;
+    string time = 8;
+    int64 destinationId = 9;
 }
-

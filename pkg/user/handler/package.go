@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-func (c *UserHandler) UserViewPackage(ctx context.Context, p *cpb.ViewPackage) (*cpb.ViewPacakgeResponce, error) {
+func (c *UserHandler) UserViewPackage(ctx context.Context, p *cpb.UserView) (*cpb.UserPackage, error) {
 	resp, err := c.SVC.ViewPackageSvc(p)
 	if err != nil {
 		log.Printf("fetching package error", err.Error())

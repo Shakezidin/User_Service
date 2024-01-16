@@ -10,7 +10,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-func (c *UserHandler) UserSignupRequest(ctx context.Context, p *cpb.Signup) (*cpb.SignupResponce, error) {
+func (c *UserHandler) UserSignupRequest(ctx context.Context, p *cpb.UserSignup) (*cpb.UserResponce, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
 		log.Println("deadline passed, aborting gRPC call")
@@ -25,7 +25,7 @@ func (c *UserHandler) UserSignupRequest(ctx context.Context, p *cpb.Signup) (*cp
 	return result, nil
 }
 
-func (c *UserHandler) UserSignupVerifyRequest(ctx context.Context, p *cpb.Verify) (*cpb.VerifyResponce, error) {
+func (c *UserHandler) UserSignupVerifyRequest(ctx context.Context, p *cpb.UserVerify) (*cpb.UserResponce, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
 		log.Println("deadline passed, aborting gRPC call")

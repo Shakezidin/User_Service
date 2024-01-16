@@ -18,7 +18,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (c *UserSVC) SignupSVC(p *pb.Signup) (*pb.SignupResponce, error) {
+func (c *UserSVC) SignupSVC(p *pb.UserSignup) (*pb.UserResponce, error) {
 	hashPassword, err := utils.HashPassword(p.Password)
 	if err != nil {
 		log.Printf("unable to hash password in CoordinatorSvc() - service, err: %v", err.Error())
@@ -52,13 +52,13 @@ func (c *UserSVC) SignupSVC(p *pb.Signup) (*pb.SignupResponce, error) {
 
 	registerUser := fmt.Sprintf("register_user_%v", p.Email)
 	c.redis.Set(context.Background(), registerUser, userData, time.Minute*2)
-	return &pb.SignupResponce{
+	return &pb.UserResponce{
 		Status:  "success",
 		Message: "user Creation initiated, check mail for OTP",
 	}, nil
 }
 
-func (c *UserSVC) VerifySVC(p *pb.Verify) (*pb.VerifyResponce, error) {
+func (c *UserSVC) VerifySVC(p *pb.UserVerify) (*pb.UserResponce, error) {
 	registerUser := fmt.Sprintf("register_user_%v", p.Email)
 	redisVal := c.redis.Get(context.Background(), registerUser)
 
@@ -109,7 +109,7 @@ func (c *UserSVC) VerifySVC(p *pb.Verify) (*pb.VerifyResponce, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &pb.VerifyResponce{
+	return &pb.UserResponce{
 		Status:  "Success",
 		Message: "User creation done",
 	}, nil
@@ -141,7 +141,7 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 	}
 
 	var ctxt = context.Background()
-	result, err := c.codClient.AvailablePackages(ctxt, &cpb.AllPackages{})
+	result, err := c.codClient.AvailablePackages(ctxt, &cpb.Packages{})
 	if err != nil {
 		fmt.Println("fetching available packages error")
 		return &pb.UserLoginResponce{
@@ -149,21 +149,21 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 			Token:    "",
 		}, err
 	} else {
-		var pkg pb.ViewPacakgeResponce
-		var pkgs []*pb.ViewPacakgeResponce
+		var pkg pb.UserPackage
+		var pkgs []*pb.UserPackage
 		for _, pakg := range result.Packages {
-			pkg.PackageId = pakg.PackageId
-			pkg.Destination = pakg.Destination
-			pkg.DestinationCount = pakg.DestinationCount
-			pkg.Enddatetime = pakg.Enddatetime
-			pkg.Endlocation = pakg.Endlocation
-			pkg.Image = pakg.Image
-			pkg.Name = pakg.Name
-			pkg.Price = pakg.Price
-			pkg.Startdatetime = pakg.Startdatetime
-			pkg.Startlocation = pakg.Startlocation
-			pkg.Description=pakg.Description
-			pkgs = append(pkgs, &pkg)
+			pkg.PackageId        = pakg.PackageId
+			pkg.Destination      = pakg.Destination
+			pkg.DestinationCount = int64(pakg.DestinationCount)
+			pkg.Enddatetime      = pakg.Enddatetime
+			pkg.Endlocation      = pakg.Endlocation
+			pkg.Image            = pakg.Image
+			pkg.Packagename      = pakg.Packagename
+			pkg.Price            = int64(pakg.Price)
+			pkg.Startdatetime    = pakg.Startdatetime
+			pkg.Startlocation    = pakg.Startlocation
+			pkg.Description      = pakg.Description
+			pkgs                 = append(pkgs, &pkg)
 
 		}
 		return &pb.UserLoginResponce{

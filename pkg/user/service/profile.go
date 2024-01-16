@@ -11,9 +11,10 @@ import (
 	"github.com/Shakezidin/config"
 	pb "github.com/Shakezidin/pkg/user/pb"
 	"github.com/Shakezidin/utils"
+	"gorm.io/gorm"
 )
 
-func (c *UserSVC) ForgetPassword(p *pb.ForgetPassword) (*pb.ForgetPasswordResponce, error) {
+func (c *UserSVC) ForgetPasswordSVC(p *pb.UserforgetPassword) (*pb.UserResponce, error) {
 	resp, err := c.twilio.SentTwilioOTP(p.Phone)
 	if err != nil {
 		return nil, err
@@ -25,12 +26,13 @@ func (c *UserSVC) ForgetPassword(p *pb.ForgetPassword) (*pb.ForgetPasswordRespon
 		}
 	}
 	c.redis.Set(context.Background(), "phoneNo", p.Phone, time.Minute*2)
-	return &pb.ForgetPasswordResponce{
-		Responce: "otp sent success",
+	return &pb.UserResponce{
+		Status:  "success",
+		Message: "otp sent successfully",
 	}, nil
 }
 
-func (c *UserSVC) ForgetPasswordVerify(p *pb.ForgetPasswordVerify) (*pb.ForgetPasswordVerifyResponce, error) {
+func (c *UserSVC) ForgetPasswordVerifySVC(p *pb.UserforgetPasswordVerify) (*pb.UserResponce, error) {
 	redisVal := c.redis.Get(context.Background(), "phoneNo")
 	if redisVal.Err() != nil {
 		log.Printf("unable to get value from redis err: %v", redisVal.Err().Error())
@@ -48,7 +50,10 @@ func (c *UserSVC) ForgetPasswordVerify(p *pb.ForgetPasswordVerify) (*pb.ForgetPa
 
 	resp, err := c.twilio.VerifyTwilioOTP(p.Phone, p.Otp)
 	if err != nil {
-		return nil, err
+		return &pb.UserResponce{
+			Status:  "failed",
+			Message: "OTP verification failed",
+		}, err
 	} else {
 		if resp.Status != nil {
 			log.Println(*resp.Status)
@@ -72,13 +77,13 @@ func (c *UserSVC) ForgetPasswordVerify(p *pb.ForgetPasswordVerify) (*pb.ForgetPa
 		return nil, err
 	}
 
-	return &pb.ForgetPasswordVerifyResponce{
-		Status: "Now you can create new password",
-		Token:  token,
+	return &pb.UserResponce{
+		Status:  "success",
+		Message: token,
 	}, nil
 }
 
-func (c *UserSVC) NewPassword(p *pb.Newpassword) (*pb.Newpasswordresponce, error) {
+func (c *UserSVC) NewPasswordSVC(p *pb.Usernewpassword) (*pb.UserResponce, error) {
 	hashPassword, err := utils.HashPassword(p.Newpassword)
 	if err != nil {
 		log.Printf("unable to hash password in CoordinatorSvc() - service, err: %v", err.Error())
@@ -91,7 +96,55 @@ func (c *UserSVC) NewPassword(p *pb.Newpassword) (*pb.Newpasswordresponce, error
 		return nil, errors.New("password updating error")
 	}
 
-	return &pb.Newpasswordresponce{
-		Status: "Password update success",
+	return &pb.UserResponce{
+		Status:  "Success",
+		Message: "Password update success",
+	}, nil
+}
+
+func (c *UserSVC) UpdateProfileSVC(p *pb.UserSignup) (*pb.UserResponce, error) {
+	user, err := c.Repo.FindUserById(uint(p.Id))
+	if err != nil {
+		return &pb.UserResponce{
+			Status:  "fail",
+			Message: "user not found",
+		}, err
+	}
+
+	if p.Email != "" {
+		_, err = c.Repo.FindUserByEmail(p.Email)
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Printf("Existing email found of a user %v", p.Email)
+			return nil, errors.New("user already exists with the same role")
+
+		}
+		user.Email = p.Email
+	}
+	if p.Name != "" {
+		user.Name = p.Name
+	}
+	if p.Phone != "" {
+		phone, _ := strconv.Atoi(p.Phone)
+		_, err = c.Repo.FindUserByPhone(phone)
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Printf("Existing phone found of a user %v", p.Email)
+			return nil, errors.New("user already exists with the same role")
+
+		}
+		user.Phone = phone
+	}
+
+	err = c.Repo.UpdateUser(user)
+	if err != nil {
+		return &pb.UserResponce{
+			Status:  "fail",
+			Message: "failed to update user profile",
+		}, err
+	}
+
+	// Return a success response
+	return &pb.UserResponce{
+		Status:  "success",
+		Message: "user profile updated successfully",
 	}, nil
 }
