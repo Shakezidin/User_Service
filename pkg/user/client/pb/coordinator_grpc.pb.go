@@ -27,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoordinatorClient interface {
-	AvailablePackages(ctx context.Context, in *Packages, opts ...grpc.CallOption) (*PackagesResponce, error)
+	AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponce, error)
 	CoordinatorViewPackage(ctx context.Context, in *View, opts ...grpc.CallOption) (*Package, error)
 }
 
@@ -39,7 +39,7 @@ func NewCoordinatorClient(cc grpc.ClientConnInterface) CoordinatorClient {
 	return &coordinatorClient{cc}
 }
 
-func (c *coordinatorClient) AvailablePackages(ctx context.Context, in *Packages, opts ...grpc.CallOption) (*PackagesResponce, error) {
+func (c *coordinatorClient) AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponce, error) {
 	out := new(PackagesResponce)
 	err := c.cc.Invoke(ctx, Coordinator_AvailablePackages_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -61,7 +61,7 @@ func (c *coordinatorClient) CoordinatorViewPackage(ctx context.Context, in *View
 // All implementations must embed UnimplementedCoordinatorServer
 // for forward compatibility
 type CoordinatorServer interface {
-	AvailablePackages(context.Context, *Packages) (*PackagesResponce, error)
+	AvailablePackages(context.Context, *View) (*PackagesResponce, error)
 	CoordinatorViewPackage(context.Context, *View) (*Package, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
@@ -70,7 +70,7 @@ type CoordinatorServer interface {
 type UnimplementedCoordinatorServer struct {
 }
 
-func (UnimplementedCoordinatorServer) AvailablePackages(context.Context, *Packages) (*PackagesResponce, error) {
+func (UnimplementedCoordinatorServer) AvailablePackages(context.Context, *View) (*PackagesResponce, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AvailablePackages not implemented")
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewPackage(context.Context, *View) (*Package, error) {
@@ -90,7 +90,7 @@ func RegisterCoordinatorServer(s grpc.ServiceRegistrar, srv CoordinatorServer) {
 }
 
 func _Coordinator_AvailablePackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Packages)
+	in := new(View)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func _Coordinator_AvailablePackages_Handler(srv interface{}, ctx context.Context
 		FullMethod: Coordinator_AvailablePackages_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoordinatorServer).AvailablePackages(ctx, req.(*Packages))
+		return srv.(CoordinatorServer).AvailablePackages(ctx, req.(*View))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -54,7 +54,7 @@ func (c *UserSVC) SignupSVC(p *pb.UserSignup) (*pb.UserResponce, error) {
 	c.redis.Set(context.Background(), registerUser, userData, time.Minute*2)
 	return &pb.UserResponce{
 		Status:  "success",
-		Message: "user Creation initiated, check mail for OTP",
+		Message: "user creation initiated, check mail for OTP",
 	}, nil
 }
 
@@ -141,7 +141,9 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 	}
 
 	var ctxt = context.Background()
-	result, err := c.codClient.AvailablePackages(ctxt, &cpb.Packages{})
+	result, err := c.codClient.AvailablePackages(ctxt, &cpb.View{
+		Status:"true",
+	})
 	if err != nil {
 		fmt.Println("fetching available packages error")
 		return &pb.UserLoginResponce{
@@ -152,18 +154,18 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 		var pkg pb.UserPackage
 		var pkgs []*pb.UserPackage
 		for _, pakg := range result.Packages {
-			pkg.PackageId        = pakg.PackageId
-			pkg.Destination      = pakg.Destination
+			pkg.PackageId = pakg.PackageId
+			pkg.Destination = pakg.Destination
 			pkg.DestinationCount = int64(pakg.DestinationCount)
-			pkg.Enddatetime      = pakg.Enddatetime
-			pkg.Endlocation      = pakg.Endlocation
-			pkg.Image            = pakg.Image
-			pkg.Packagename      = pakg.Packagename
-			pkg.Price            = int64(pakg.Price)
-			pkg.Startdatetime    = pakg.Startdatetime
-			pkg.Startlocation    = pakg.Startlocation
-			pkg.Description      = pakg.Description
-			pkgs                 = append(pkgs, &pkg)
+			pkg.Enddatetime = pakg.Enddatetime
+			pkg.Endlocation = pakg.Endlocation
+			pkg.Image = pakg.Image
+			pkg.Packagename = pakg.Packagename
+			pkg.Price = int64(pakg.Price)
+			pkg.Startdatetime = pakg.Startdatetime
+			pkg.Startlocation = pakg.Startlocation
+			pkg.Description = pakg.Description
+			pkgs = append(pkgs, &pkg)
 
 		}
 		return &pb.UserLoginResponce{

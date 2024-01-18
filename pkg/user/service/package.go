@@ -17,9 +17,9 @@ func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 		fmt.Println("fetching available packages error")
 		return nil, err
 	} else {
-		var dst pb.UserDestination
 		var dsts []*pb.UserDestination
 		for _, pakg := range result.Destinations {
+			var dst pb.UserDestination
 			dst.Description = pakg.Description
 			dst.DestinationId = pakg.DestinationId
 			dst.DestinationName = pakg.DestinationName

@@ -6,16 +6,13 @@ option go_package = ".";
 
 
 service Coordinator {
-    rpc AvailablePackages(Packages) returns (PackagesResponce);
+    rpc AvailablePackages(View) returns (PackagesResponce);
     rpc CoordinatorViewPackage(View)returns(Package);
 }
 
 message View{
     int64 Id = 1;
-}
-
-message Packages{
-
+    string status = 2;
 }
 
 message PackagesResponce{
