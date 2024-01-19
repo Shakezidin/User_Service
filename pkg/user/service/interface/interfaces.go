@@ -15,4 +15,6 @@ type UserSVCInter interface {
 	UpdateProfileSVC(p *pb.UserSignup) (*pb.UserResponce, error)
 	ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error)
 	ViewActivitySvc(p *pb.UserView) (*pb.UserActivity, error)
+	ViewCatagoriesSvc() (*pb.UserCategories, error)
+	SearchPackageSvc(p *pb.UserSearch) (*pb.UserPacakges, error) 
 }

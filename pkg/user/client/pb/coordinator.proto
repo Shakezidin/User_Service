@@ -10,6 +10,24 @@ service Coordinator {
     rpc CoordinatorViewPackage(View)returns(Package);
     rpc CoordinatorViewDestination(View)returns(Destination);
     rpc CoordinatorViewActivity(View)returns(Activity);
+    rpc ViewCatagories(View)returns(Catagories);
+    rpc PackageSearch(Search)returns(PackagesResponce);
+}
+
+message Search{
+    int64 catagoryId = 1;
+    int64 travelercount = 2;
+    string pickup_place = 3;
+    string finaldestination = 4;
+    string date = 5;
+    int64 page = 6;
+    string enddate = 7;
+    int64 maxDestination = 8;
+    repeated string destination = 9;
+}
+
+message Catagories{
+    repeated Category Catagories = 1;
 }
 
 message View{
@@ -22,7 +40,8 @@ message PackagesResponce{
 }
 
 message Category{
-    string categoryName = 1;
+    int64 CatagoryId = 1;
+    string categoryName = 2;
 }
 
 message Package{
@@ -31,8 +50,8 @@ message Package{
     int64 CoorinatorId = 3;
     string startlocation = 4;
     string endlocation = 5;
-    string startdatetime = 6;
-    string enddatetime = 7;
+    string startdate = 6;
+    string enddate = 7;
     int64  price = 8;
     string image = 9;
     int64  destinationCount = 10;

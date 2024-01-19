@@ -16,7 +16,7 @@ func (c *UserHandler) UserViewDestination(ctx context.Context, p *pb.UserView) (
 	return resp, nil
 }
 
-func (c *UserHandler)UserViewActivity(ctx context.Context, p *pb.UserView)(*pb.UserActivity,error){
+func (c *UserHandler) UserViewActivity(ctx context.Context, p *pb.UserView) (*pb.UserActivity, error) {
 	resp, err := c.SVC.ViewActivitySvc(p)
 	if err != nil {
 		log.Printf("fetching activity error", err.Error())
