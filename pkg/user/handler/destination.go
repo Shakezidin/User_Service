@@ -1,14 +1,14 @@
 package handler
 
 import (
+	"context"
 	"log"
 
 	pb "github.com/Shakezidin/pkg/user/pb"
-	"golang.org/x/net/context"
 )
 
-func (c *UserHandler) UserViewPackage(ctx context.Context, p *pb.UserView) (*pb.UserPackage, error) {
-	resp, err := c.SVC.ViewPackageSvc(p)
+func (c *UserHandler) UserViewDestination(ctx context.Context, p *pb.UserView) (*pb.UserDestination, error) {
+	resp, err := c.SVC.ViewDestinationSvc(p)
 	if err != nil {
 		log.Printf("fetching package error", err.Error())
 		return nil, err

@@ -5,11 +5,13 @@ import (
 )
 
 type UserSVCInter interface {
-	SignupSVC(p *pb.Signup) (*pb.SignupResponce, error)
-	VerifySVC(p *pb.Verify) (*pb.VerifyResponce, error)
+	SignupSVC(p *pb.UserSignup) (*pb.UserResponce, error)
+	VerifySVC(p *pb.UserVerify) (*pb.UserResponce, error)
 	UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error)
-	ViewPackageSvc(p *pb.ViewPackage) (*pb.ViewPacakgeResponce, error) 
-	ForgetPassword(p *pb.ForgetPassword) (*pb.ForgetPasswordResponce, error)
-	ForgetPasswordVerify(p *pb.ForgetPasswordVerify)(*pb.ForgetPasswordVerifyResponce,error)
-	NewPassword(p *pb.Newpassword)(*pb.Newpasswordresponce,error)
+	ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) 
+	ForgetPasswordSVC(p *pb.UserforgetPassword) (*pb.UserResponce, error) 
+	ForgetPasswordVerifySVC(p *pb.UserforgetPasswordVerify) (*pb.UserResponce, error)
+	NewPasswordSVC(p *pb.Usernewpassword) (*pb.UserResponce, error)
+	UpdateProfileSVC(p *pb.UserSignup) (*pb.UserResponce, error)
+	ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error)
 }

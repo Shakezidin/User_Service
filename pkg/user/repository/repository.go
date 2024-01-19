@@ -46,3 +46,18 @@ func (c *UserRepo) UpdatePassword(id uint, newpassword string) error {
 
 	return nil
 }
+
+func (c *UserRepo) FindUserById(id uint) (*DOM.User, error) {
+	var user *DOM.User
+	if err := c.db.Where("id = ?", id).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (c *UserRepo) UpdateUser(user *DOM.User) error {
+	if err := c.db.Save(user).Error; err != nil {
+		return err
+	}
+	return nil
+}
