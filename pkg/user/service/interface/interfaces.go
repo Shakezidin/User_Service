@@ -13,4 +13,5 @@ type UserSVCInter interface {
 	ForgetPasswordVerifySVC(p *pb.UserforgetPasswordVerify) (*pb.UserResponce, error)
 	NewPasswordSVC(p *pb.Usernewpassword) (*pb.UserResponce, error)
 	UpdateProfileSVC(p *pb.UserSignup) (*pb.UserResponce, error)
+	ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error)
 }

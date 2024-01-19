@@ -13,6 +13,7 @@ service User {
     rpc UserForgetPasswordVerify(UserforgetPasswordVerify)returns(UserResponce);
     rpc UserNewPassword(Usernewpassword)returns(UserResponce);
     rpc UserProfileUpdate(UserSignup)returns(UserResponce);
+    rpc UserViewDestination(UserView)returns(UserDestination);
 }
 
 message Usernewpassword{
@@ -34,32 +35,32 @@ message UserCategory{
 }
 
 message UserActivity{
-    int64 activityId = 1;
+    int64  activityId = 1;
     string activityname = 2;
     string description = 3;
     string Location = 4;
     string ActivityType = 5;
-    int64 Amount = 6;
+    int64  Amount = 6;
     string date = 7;
     string time = 8;
-    int64 destinationId = 9;
+    int64  destinationId = 9;
 }
 
 message UserDestination{
-    int64 destinationId = 1;
+    int64  destinationId = 1;
     string DestinationName = 2;
     string Description = 3;
-    int64 minprice = 4;
-    int64 maxCapacity = 5;
+    int64  minprice = 4;
+    int64  maxCapacity = 5;
     string image = 6;
     repeated UserActivity activity = 7;
-    int64 PackageID = 8;
+    int64  PackageID = 8;
 }
 
 message UserPackage{
     int64  PackageId = 1;
     string packagename = 2;
-    int64 CoorinatorId = 3;
+    int64  CoorinatorId = 3;
     string startlocation = 4;
     string endlocation = 5;
     string startdatetime = 6;
@@ -69,7 +70,7 @@ message UserPackage{
     int64  destinationCount = 10;
     string destination = 11;
     string Description = 12;
-    int64 maxCapacity = 13;
+    int64  maxCapacity = 13;
     int64  categoryId = 14;  
     UserCategory category = 15;
     repeated UserDestination Destinations = 16;
@@ -77,7 +78,6 @@ message UserPackage{
 
 message UserView{
     int64 Id = 1;
-    bool status = 2;
 }
 
 message UserLogin{
@@ -97,7 +97,7 @@ message UserSignup{
     string phone = 3;
     string password = 4;
     string role = 5;
-    int64 Id = 6;
+    int64  Id = 6;
 }
 
 message UserResponce{

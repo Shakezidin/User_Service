@@ -8,6 +8,7 @@ option go_package = ".";
 service Coordinator {
     rpc AvailablePackages(View) returns (PackagesResponce);
     rpc CoordinatorViewPackage(View)returns(Package);
+    rpc CoordinatorViewDestination(View)returns(Destination);
 }
 
 message View{
