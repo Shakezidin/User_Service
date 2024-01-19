@@ -45,3 +45,27 @@ func (c *UserSVC) ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error
 		}, nil
 	}
 }
+
+func (c *UserSVC) ViewActivitySvc(p *pb.UserView) (*pb.UserActivity, error) {
+	var ctxt = context.Background()
+	result, err := c.codClient.CoordinatorViewActivity(ctxt, &cpb.View{
+		Id: p.Id,
+	})
+	if err != nil {
+		fmt.Println("fetching activity error")
+		return nil, err
+	}
+
+	return &pb.UserActivity{
+		ActivityId:    result.ActivityId,
+		Activityname:  result.Activityname,
+		Description:   result.Description,
+		Location:      result.Location,
+		ActivityType:  result.ActivityType,
+		Amount:        result.Amount,
+		Date:          result.Date,
+		Time:          result.Time,
+		DestinationId: result.DestinationId,
+	}, nil
+
+}

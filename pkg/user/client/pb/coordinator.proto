@@ -9,6 +9,7 @@ service Coordinator {
     rpc AvailablePackages(View) returns (PackagesResponce);
     rpc CoordinatorViewPackage(View)returns(Package);
     rpc CoordinatorViewDestination(View)returns(Destination);
+    rpc CoordinatorViewActivity(View)returns(Activity);
 }
 
 message View{
