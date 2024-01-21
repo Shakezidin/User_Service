@@ -22,6 +22,9 @@ const (
 	Coordinator_AvailablePackages_FullMethodName          = "/pb.Coordinator/AvailablePackages"
 	Coordinator_CoordinatorViewPackage_FullMethodName     = "/pb.Coordinator/CoordinatorViewPackage"
 	Coordinator_CoordinatorViewDestination_FullMethodName = "/pb.Coordinator/CoordinatorViewDestination"
+	Coordinator_CoordinatorViewActivity_FullMethodName    = "/pb.Coordinator/CoordinatorViewActivity"
+	Coordinator_ViewCatagories_FullMethodName             = "/pb.Coordinator/ViewCatagories"
+	Coordinator_PackageSearch_FullMethodName              = "/pb.Coordinator/PackageSearch"
 )
 
 // CoordinatorClient is the client API for Coordinator service.
@@ -31,6 +34,9 @@ type CoordinatorClient interface {
 	AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponce, error)
 	CoordinatorViewPackage(ctx context.Context, in *View, opts ...grpc.CallOption) (*Package, error)
 	CoordinatorViewDestination(ctx context.Context, in *View, opts ...grpc.CallOption) (*Destination, error)
+	CoordinatorViewActivity(ctx context.Context, in *View, opts ...grpc.CallOption) (*Activity, error)
+	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error)
+	PackageSearch(ctx context.Context, in *Search, opts ...grpc.CallOption) (*PackagesResponce, error)
 }
 
 type coordinatorClient struct {
@@ -68,6 +74,33 @@ func (c *coordinatorClient) CoordinatorViewDestination(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *coordinatorClient) CoordinatorViewActivity(ctx context.Context, in *View, opts ...grpc.CallOption) (*Activity, error) {
+	out := new(Activity)
+	err := c.cc.Invoke(ctx, Coordinator_CoordinatorViewActivity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error) {
+	out := new(Catagories)
+	err := c.cc.Invoke(ctx, Coordinator_ViewCatagories_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) PackageSearch(ctx context.Context, in *Search, opts ...grpc.CallOption) (*PackagesResponce, error) {
+	out := new(PackagesResponce)
+	err := c.cc.Invoke(ctx, Coordinator_PackageSearch_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoordinatorServer is the server API for Coordinator service.
 // All implementations must embed UnimplementedCoordinatorServer
 // for forward compatibility
@@ -75,6 +108,9 @@ type CoordinatorServer interface {
 	AvailablePackages(context.Context, *View) (*PackagesResponce, error)
 	CoordinatorViewPackage(context.Context, *View) (*Package, error)
 	CoordinatorViewDestination(context.Context, *View) (*Destination, error)
+	CoordinatorViewActivity(context.Context, *View) (*Activity, error)
+	ViewCatagories(context.Context, *View) (*Catagories, error)
+	PackageSearch(context.Context, *Search) (*PackagesResponce, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
 
@@ -90,6 +126,15 @@ func (UnimplementedCoordinatorServer) CoordinatorViewPackage(context.Context, *V
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewDestination(context.Context, *View) (*Destination, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewDestination not implemented")
+}
+func (UnimplementedCoordinatorServer) CoordinatorViewActivity(context.Context, *View) (*Activity, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewActivity not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewCatagories(context.Context, *View) (*Catagories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewCatagories not implemented")
+}
+func (UnimplementedCoordinatorServer) PackageSearch(context.Context, *Search) (*PackagesResponce, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PackageSearch not implemented")
 }
 func (UnimplementedCoordinatorServer) mustEmbedUnimplementedCoordinatorServer() {}
 
@@ -158,6 +203,60 @@ func _Coordinator_CoordinatorViewDestination_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coordinator_CoordinatorViewActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).CoordinatorViewActivity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_CoordinatorViewActivity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).CoordinatorViewActivity(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_ViewCatagories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewCatagories(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewCatagories_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewCatagories(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_PackageSearch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Search)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).PackageSearch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_PackageSearch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).PackageSearch(ctx, req.(*Search))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Coordinator_ServiceDesc is the grpc.ServiceDesc for Coordinator service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +275,18 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CoordinatorViewDestination",
 			Handler:    _Coordinator_CoordinatorViewDestination_Handler,
+		},
+		{
+			MethodName: "CoordinatorViewActivity",
+			Handler:    _Coordinator_CoordinatorViewActivity_Handler,
+		},
+		{
+			MethodName: "ViewCatagories",
+			Handler:    _Coordinator_ViewCatagories_Handler,
+		},
+		{
+			MethodName: "PackageSearch",
+			Handler:    _Coordinator_PackageSearch_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

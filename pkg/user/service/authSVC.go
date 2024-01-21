@@ -151,18 +151,18 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 			Token:    "",
 		}, err
 	} else {
-		var pkg pb.UserPackage
 		var pkgs []*pb.UserPackage
 		for _, pakg := range result.Packages {
+			var pkg pb.UserPackage
 			pkg.PackageId = pakg.PackageId
 			pkg.Destination = pakg.Destination
 			pkg.DestinationCount = int64(pakg.DestinationCount)
-			pkg.Enddatetime = pakg.Enddatetime
+			pkg.Enddate = pakg.Enddate
 			pkg.Endlocation = pakg.Endlocation
 			pkg.Image = pakg.Image
 			pkg.Packagename = pakg.Packagename
 			pkg.Price = int64(pakg.Price)
-			pkg.Startdatetime = pakg.Startdatetime
+			pkg.Startdate = pakg.Startdate
 			pkg.Startlocation = pakg.Startlocation
 			pkg.Description = pakg.Description
 			pkgs = append(pkgs, &pkg)

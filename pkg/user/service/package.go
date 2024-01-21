@@ -36,8 +36,8 @@ func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 			Packagename:      result.Packagename,
 			Startlocation:    result.Startlocation,
 			Endlocation:      result.Endlocation,
-			Startdatetime:    result.Startdatetime,
-			Enddatetime:      result.Enddatetime,
+			Startdate:        result.Startdate,
+			Enddate:          result.Enddate,
 			Price:            result.Price,
 			Image:            result.Image,
 			DestinationCount: result.DestinationCount,
@@ -48,4 +48,26 @@ func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 			Destinations:     dsts,
 		}, nil
 	}
+}
+
+func (c *UserSVC) ViewCatagoriesSvc() (*pb.UserCategories, error) {
+	var ctxt = context.Background()
+	result, err := c.codClient.ViewCatagories(ctxt, &cpb.View{})
+	if err != nil {
+		fmt.Println("fetching available packages error")
+		return nil, err
+	}
+
+	var ctgry pb.UserCategory
+	var ctgries []*pb.UserCategory
+
+	for _, ctgr := range result.Catagories {
+		ctgry.CategoryName = ctgr.CategoryName
+		ctgry.CategoryId = ctgr.CatagoryId
+		ctgries = append(ctgries, &ctgry)
+	}
+
+	return &pb.UserCategories{
+		Catagory: ctgries,
+	}, nil
 }
