@@ -151,9 +151,9 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 			Token:    "",
 		}, err
 	} else {
-		var pkg pb.UserPackage
 		var pkgs []*pb.UserPackage
 		for _, pakg := range result.Packages {
+			var pkg pb.UserPackage
 			pkg.PackageId = pakg.PackageId
 			pkg.Destination = pakg.Destination
 			pkg.DestinationCount = int64(pakg.DestinationCount)
