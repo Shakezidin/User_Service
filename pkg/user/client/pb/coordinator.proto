@@ -12,6 +12,24 @@ service Coordinator {
     rpc CoordinatorViewActivity(View)returns(Activity);
     rpc ViewCatagories(View)returns(Catagories);
     rpc PackageSearch(Search)returns(PackagesResponce);
+    rpc TravellerDetails(TravellerRequest)returns(TravellerResponse);
+}
+
+message TravellerResponse {
+    string booking_reference = 1;
+}
+
+message TravellerDetails {
+    string name = 1;
+    string age = 2;
+    string gender = 3;
+    repeated string activityId = 4;
+}
+  
+message TravellerRequest {
+    repeated TravellerDetails traveller_details = 1;
+    string UserId = 2;
+    string packageId = 3;
 }
 
 message Search{

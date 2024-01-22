@@ -17,4 +17,5 @@ type UserSVCInter interface {
 	ViewActivitySvc(p *pb.UserView) (*pb.UserActivity, error)
 	ViewCatagoriesSvc() (*pb.UserCategories, error)
 	SearchPackageSvc(p *pb.UserSearch) (*pb.UserPacakges, error) 
+	TraverllerDetailSVC(p *pb.UserTravellerRequest)(*pb.UserTravellerResponse,error)
 }
