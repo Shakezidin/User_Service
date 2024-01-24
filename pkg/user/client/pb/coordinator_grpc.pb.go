@@ -26,6 +26,7 @@ const (
 	Coordinator_ViewCatagories_FullMethodName             = "/pb.Coordinator/ViewCatagories"
 	Coordinator_PackageSearch_FullMethodName              = "/pb.Coordinator/PackageSearch"
 	Coordinator_TravellerDetails_FullMethodName           = "/pb.Coordinator/TravellerDetails"
+	Coordinator_OfflineBooking_FullMethodName             = "/pb.Coordinator/OfflineBooking"
 )
 
 // CoordinatorClient is the client API for Coordinator service.
@@ -39,6 +40,7 @@ type CoordinatorClient interface {
 	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error)
 	PackageSearch(ctx context.Context, in *Search, opts ...grpc.CallOption) (*PackagesResponce, error)
 	TravellerDetails(ctx context.Context, in *TravellerRequest, opts ...grpc.CallOption) (*TravellerResponse, error)
+	OfflineBooking(ctx context.Context, in *Booking, opts ...grpc.CallOption) (*BookingResponce, error)
 }
 
 type coordinatorClient struct {
@@ -112,6 +114,15 @@ func (c *coordinatorClient) TravellerDetails(ctx context.Context, in *TravellerR
 	return out, nil
 }
 
+func (c *coordinatorClient) OfflineBooking(ctx context.Context, in *Booking, opts ...grpc.CallOption) (*BookingResponce, error) {
+	out := new(BookingResponce)
+	err := c.cc.Invoke(ctx, Coordinator_OfflineBooking_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoordinatorServer is the server API for Coordinator service.
 // All implementations must embed UnimplementedCoordinatorServer
 // for forward compatibility
@@ -123,6 +134,7 @@ type CoordinatorServer interface {
 	ViewCatagories(context.Context, *View) (*Catagories, error)
 	PackageSearch(context.Context, *Search) (*PackagesResponce, error)
 	TravellerDetails(context.Context, *TravellerRequest) (*TravellerResponse, error)
+	OfflineBooking(context.Context, *Booking) (*BookingResponce, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
 
@@ -150,6 +162,9 @@ func (UnimplementedCoordinatorServer) PackageSearch(context.Context, *Search) (*
 }
 func (UnimplementedCoordinatorServer) TravellerDetails(context.Context, *TravellerRequest) (*TravellerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TravellerDetails not implemented")
+}
+func (UnimplementedCoordinatorServer) OfflineBooking(context.Context, *Booking) (*BookingResponce, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OfflineBooking not implemented")
 }
 func (UnimplementedCoordinatorServer) mustEmbedUnimplementedCoordinatorServer() {}
 
@@ -290,6 +305,24 @@ func _Coordinator_TravellerDetails_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coordinator_OfflineBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Booking)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).OfflineBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_OfflineBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).OfflineBooking(ctx, req.(*Booking))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Coordinator_ServiceDesc is the grpc.ServiceDesc for Coordinator service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -324,6 +357,10 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TravellerDetails",
 			Handler:    _Coordinator_TravellerDetails_Handler,
+		},
+		{
+			MethodName: "OfflineBooking",
+			Handler:    _Coordinator_OfflineBooking_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

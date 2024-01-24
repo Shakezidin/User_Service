@@ -8,7 +8,7 @@ import (
 	pb "github.com/Shakezidin/pkg/user/pb"
 )
 
-func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPacakges, error) {
+func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 	var ctxt = context.Background()
 	destinations := make([]string, len(p.Destination))
 	for _, dstn := range p.Destination {
@@ -48,7 +48,7 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPacakges, error) {
 		pkgs = append(pkgs, &pkg)
 	}
 
-	return &pb.UserPacakges{
+	return &pb.UserPackages{
 		Packages: pkgs,
 	}, nil
 
