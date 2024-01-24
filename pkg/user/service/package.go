@@ -50,6 +50,41 @@ func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 	}
 }
 
+func (c *UserSVC) ViewPackagesSvc(p *pb.UserView) (*pb.UserPackages, error) {
+	var ctxt = context.Background()
+	result, err := c.codClient.AvailablePackages(ctxt, &cpb.View{
+		Status: p.Status,
+		Page:   p.Page,
+	})
+	var pkgs []*pb.UserPackage
+	if err != nil {
+		fmt.Println("fetching available packages error")
+		return &pb.UserPackages{
+			Packages: nil,
+		}, err
+	} else {
+		for _, pakg := range result.Packages {
+			var pkg pb.UserPackage
+			pkg.PackageId = pakg.PackageId
+			pkg.Destination = pakg.Destination
+			pkg.DestinationCount = int64(pakg.DestinationCount)
+			pkg.Enddate = pakg.Enddate
+			pkg.Image = pakg.Image
+			pkg.Packagename = pakg.Packagename
+			pkg.Price = int64(pakg.Price)
+			pkg.Startdate = pakg.Startdate
+			pkg.Startlocation = pakg.Startlocation
+			pkg.Description = pakg.Description
+			pkgs = append(pkgs, &pkg)
+
+		}
+	}
+
+	return &pb.UserPackages{
+		Packages: pkgs,
+	}, nil
+}
+
 func (c *UserSVC) ViewCatagoriesSvc() (*pb.UserCategories, error) {
 	var ctxt = context.Background()
 	result, err := c.codClient.ViewCatagories(ctxt, &cpb.View{})

@@ -24,3 +24,12 @@ func (c *UserHandler)UserViewCatagories(ctx context.Context, p *pb.UserView)(*pb
 	}
 	return resp, nil
 }
+
+func (c *UserHandler)UserViewPackages(ctx context.Context,p *pb.UserView)(*pb.UserPackages,error){
+	resp, err := c.SVC.ViewPackagesSvc(p)
+	if err != nil {
+		log.Printf("fetching packages error", err.Error())
+		return nil, err
+	}
+	return resp, nil
+}

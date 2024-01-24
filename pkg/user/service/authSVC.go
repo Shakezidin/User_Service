@@ -11,7 +11,6 @@ import (
 
 	"github.com/Shakezidin/config"
 	DOM "github.com/Shakezidin/pkg/dom"
-	cpb "github.com/Shakezidin/pkg/user/client/pb"
 	pb "github.com/Shakezidin/pkg/user/pb"
 
 	"github.com/Shakezidin/utils"
@@ -140,37 +139,8 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 		return nil, err
 	}
 
-	var ctxt = context.Background()
-	result, err := c.codClient.AvailablePackages(ctxt, &cpb.View{
-		Status:"true",
-	})
-	if err != nil {
-		fmt.Println("fetching available packages error")
-		return &pb.UserLoginResponce{
-			Packages: nil,
-			Token:    "",
-		}, err
-	} else {
-		var pkgs []*pb.UserPackage
-		for _, pakg := range result.Packages {
-			var pkg pb.UserPackage
-			pkg.PackageId = pakg.PackageId
-			pkg.Destination = pakg.Destination
-			pkg.DestinationCount = int64(pakg.DestinationCount)
-			pkg.Enddate = pakg.Enddate
-			pkg.Endlocation = pakg.Endlocation
-			pkg.Image = pakg.Image
-			pkg.Packagename = pakg.Packagename
-			pkg.Price = int64(pakg.Price)
-			pkg.Startdate = pakg.Startdate
-			pkg.Startlocation = pakg.Startlocation
-			pkg.Description = pakg.Description
-			pkgs = append(pkgs, &pkg)
+	return &pb.UserLoginResponce{
+		Token: token,
+	}, nil
 
-		}
-		return &pb.UserLoginResponce{
-			Packages: pkgs,
-			Token:    token,
-		}, nil
-	}
 }
