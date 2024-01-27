@@ -17,9 +17,11 @@ type UserSVCInter interface {
 	UpdateProfileSVC(p *pb.UserSignup) (*pb.UserResponce, error)
 	ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error)
 	ViewActivitySvc(p *pb.UserView) (*pb.UserActivity, error)
-	ViewCatagoriesSvc() (*pb.UserCategories, error)
+	ViewCatagoriesSvc(p *pb.UserView) (*pb.UserCategories, error)
 	SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) 
 	TraverllerDetailSVC(p *pb.UserTravellerRequest)(*pb.UserTravellerResponse,error)
 	OfflineBookingSVC(ctx context.Context,p *pb.UserBooking)(*pb.UserBookingResponce,error)
 	ViewPackagesSvc(p *pb.UserView)(*pb.UserPackages,error)
+	OnlinePaymentSVC(ctx context.Context,p *pb.UserBooking)(*pb.UserOnlinePaymentResponse, error)
+	FilterPackageSvc(p *pb.UserFilter)(*pb.UserPackages,error)
 }

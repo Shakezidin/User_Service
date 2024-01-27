@@ -23,7 +23,6 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 	}
 	resp, err := c.codClient.TravellerDetails(ctx, &cpb.TravellerRequest{
 		TravellerDetails: travellerDetails,
-		UserId:           p.UserId,
 		PackageId:        p.PackageId,
 	})
 
@@ -48,11 +47,12 @@ func (c *UserSVC) OfflineBookingSVC(ctx context.Context, p *pb.UserBooking) (*pb
 	})
 	if err != nil {
 		fmt.Println("fetching available packages error")
-		return nil, err
+		return &pb.UserBookingResponce{
+			Status: "fail",
+		}, err
 	}
 
 	return &pb.UserBookingResponce{
-		Status:     result.Status,
 		Booking_Id: result.Booking_Id,
 	}, nil
 }

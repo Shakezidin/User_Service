@@ -17,7 +17,7 @@ func (c *UserHandler) UserViewPackage(ctx context.Context, p *pb.UserView) (*pb.
 }
 
 func (c *UserHandler)UserViewCatagories(ctx context.Context, p *pb.UserView)(*pb.UserCategories,error){
-	resp, err := c.SVC.ViewCatagoriesSvc()
+	resp, err := c.SVC.ViewCatagoriesSvc(p)
 	if err != nil {
 		log.Printf("fetching catagories error", err.Error())
 		return nil, err
@@ -27,6 +27,15 @@ func (c *UserHandler)UserViewCatagories(ctx context.Context, p *pb.UserView)(*pb
 
 func (c *UserHandler)UserViewPackages(ctx context.Context,p *pb.UserView)(*pb.UserPackages,error){
 	resp, err := c.SVC.ViewPackagesSvc(p)
+	if err != nil {
+		log.Printf("fetching packages error", err.Error())
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *UserHandler)UserFilterPackage(ctx context.Context,p *pb.UserFilter)(*pb.UserPackages,error){
+	resp, err := c.SVC.FilterPackageSvc(p)
 	if err != nil {
 		log.Printf("fetching packages error", err.Error())
 		return nil, err

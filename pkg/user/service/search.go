@@ -37,9 +37,9 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 		pkg.Destination = pakg.Destination
 		pkg.DestinationCount = int64(pakg.DestinationCount)
 		pkg.Enddate = pakg.Enddate
-		pkg.Endlocation = pakg.Endlocation
 		pkg.Image = pakg.Image
 		pkg.Packagename = pakg.Packagename
+		pkg.AvailableSpace = pakg.AvailableSpace
 		pkg.Price = int64(pakg.Price)
 		pkg.Startdate = pakg.Startdate
 		pkg.Startlocation = pakg.Startlocation

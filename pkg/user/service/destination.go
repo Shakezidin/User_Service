@@ -34,14 +34,14 @@ func (c *UserSVC) ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error
 		}
 
 		return &pb.UserDestination{
-			DestinationId:   result.DestinationId,
 			DestinationName: result.DestinationName,
+			DestinationId:   result.DestinationId,
 			Description:     result.Description,
-			Minprice:        result.Minprice,
 			MaxCapacity:     result.MaxCapacity,
+			PackageID:       result.PackageID,
+			Minprice:        result.Minprice,
 			Image:           result.Image,
 			Activity:        actvty,
-			PackageID:       result.PackageID,
 		}, nil
 	}
 }

@@ -106,11 +106,12 @@ func (c *UserSVC) VerifySVC(p *pb.UserVerify) (*pb.UserResponce, error) {
 
 	err = c.Repo.CreateUser(&userData)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("error while creating user")
 	}
 	return &pb.UserResponce{
 		Status:  "Success",
 		Message: "User creation done",
+		Id:      int64(userData.ID),
 	}, nil
 
 }
@@ -120,10 +121,10 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			log.Printf("No existing record found og %v", p.Email)
-			return nil, err
+			return nil, errors.New("user not found")
 		} else {
 			log.Printf("unable to login %v, err: %v", p.Email, err.Error())
-			return nil, err
+			return nil, errors.New("unable to login")
 		}
 	}
 
