@@ -35,11 +35,11 @@ func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 		return &pb.UserPackage{
 			Packagename:      result.Packagename,
 			Startlocation:    result.Startlocation,
-			Endlocation:      result.Endlocation,
 			Startdate:        result.Startdate,
 			Enddate:          result.Enddate,
 			Price:            result.Price,
 			Image:            result.Image,
+			AvailableSpace:   result.AvailableSpace,
 			DestinationCount: result.DestinationCount,
 			Destination:      result.Destination,
 			PackageId:        result.PackageId,
@@ -71,6 +71,7 @@ func (c *UserSVC) ViewPackagesSvc(p *pb.UserView) (*pb.UserPackages, error) {
 			pkg.Enddate = pakg.Enddate
 			pkg.Image = pakg.Image
 			pkg.Packagename = pakg.Packagename
+			pkg.AvailableSpace = pakg.AvailableSpace
 			pkg.Price = int64(pakg.Price)
 			pkg.Startdate = pakg.Startdate
 			pkg.Startlocation = pakg.Startlocation
@@ -85,24 +86,67 @@ func (c *UserSVC) ViewPackagesSvc(p *pb.UserView) (*pb.UserPackages, error) {
 	}, nil
 }
 
-func (c *UserSVC) ViewCatagoriesSvc() (*pb.UserCategories, error) {
+func (c *UserSVC) ViewCatagoriesSvc(p *pb.UserView) (*pb.UserCategories, error) {
 	var ctxt = context.Background()
-	result, err := c.codClient.ViewCatagories(ctxt, &cpb.View{})
+	result, err := c.codClient.ViewCatagories(ctxt, &cpb.View{
+		Page: p.Page,
+	})
 	if err != nil {
 		fmt.Println("fetching available packages error")
 		return nil, err
 	}
 
-	var ctgry pb.UserCategory
 	var ctgries []*pb.UserCategory
 
 	for _, ctgr := range result.Catagories {
-		ctgry.CategoryName = ctgr.CategoryName
+		var ctgry pb.UserCategory
 		ctgry.CategoryId = ctgr.CatagoryId
+		ctgry.CategoryName = ctgr.CategoryName
 		ctgries = append(ctgries, &ctgry)
 	}
 
 	return &pb.UserCategories{
 		Catagory: ctgries,
+	}, nil
+}
+
+func (c *UserSVC) FilterPackageSvc(p *pb.UserFilter) (*pb.UserPackages, error) {
+	var ctxt = context.Background()
+	result, err := c.codClient.FilterPackage(ctxt, &cpb.Filter{
+		Status:       p.Status,
+		Page:         p.Page,
+		Departurtime: p.Departurtime,
+		MinPrice:     p.MinPrice,
+		MaxPrice:     p.MaxPrice,
+		CategoryId:   p.CategoryId,
+		OrderBy:      p.OrderBy,
+	})
+	var pkgs []*pb.UserPackage
+	if err != nil {
+		fmt.Println("fetching available packages error")
+		return &pb.UserPackages{
+			Packages: nil,
+		}, err
+	} else {
+		for _, pakg := range result.Packages {
+			var pkg pb.UserPackage
+			pkg.PackageId = pakg.PackageId
+			pkg.Destination = pakg.Destination
+			pkg.DestinationCount = int64(pakg.DestinationCount)
+			pkg.Enddate = pakg.Enddate
+			pkg.Image = pakg.Image
+			pkg.Packagename = pakg.Packagename
+			pkg.AvailableSpace = pakg.AvailableSpace
+			pkg.Price = int64(pakg.Price)
+			pkg.Startdate = pakg.Startdate
+			pkg.Startlocation = pakg.Startlocation
+			pkg.Description = pakg.Description
+			pkgs = append(pkgs, &pkg)
+
+		}
+	}
+
+	return &pb.UserPackages{
+		Packages: pkgs,
 	}, nil
 }
