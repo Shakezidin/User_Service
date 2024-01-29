@@ -22,6 +22,7 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 		travellerDetails = append(travellerDetails, &travellerDetail)
 	}
 	resp, err := c.codClient.TravellerDetails(ctx, &cpb.TravellerRequest{
+		UserId:           p.UserId,
 		TravellerDetails: travellerDetails,
 		PackageId:        p.PackageId,
 	})
@@ -36,23 +37,9 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 		PackagePrice:       resp.PackagePrice,
 		ActivityTotalPrice: resp.ActivityTotalPrice,
 		TotalPrice:         resp.TotalPrice,
+		AdvanceAmount:      resp.AdvanceAmount,
 		RefId:              resp.RefId,
 	}, nil
 }
 
-func (c *UserSVC) OfflineBookingSVC(ctx context.Context, p *pb.UserBooking) (*pb.UserBookingResponce, error) {
-	result, err := c.codClient.OfflineBooking(ctx, &cpb.Booking{
-		RefId:  p.RefId,
-		UserId: p.UserId,
-	})
-	if err != nil {
-		fmt.Println("fetching available packages error")
-		return &pb.UserBookingResponce{
-			Status: "fail",
-		}, err
-	}
 
-	return &pb.UserBookingResponce{
-		Booking_Id: result.Booking_Id,
-	}, nil
-}

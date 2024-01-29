@@ -15,12 +15,3 @@ func (c *UserHandler) UserTravellerDetails(ctx context.Context, p *pb.UserTravel
 	}
 	return resp, nil
 }
-
-func (c *UserHandler) UserOfflineBooking(ctx context.Context, p *pb.UserBooking) (*pb.UserBookingResponce, error) {
-	resp, err := c.SVC.OfflineBookingSVC(ctx,p)
-	if err != nil {
-		log.Printf("error while booking package", err.Error())
-		return nil, err
-	}
-	return resp, nil
-}

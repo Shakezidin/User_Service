@@ -15,3 +15,12 @@ func (c *UserHandler) UserOnlinePayment(ctx context.Context, p *pb.UserBooking) 
 	}
 	return resp, nil
 }
+
+func (c *UserHandler)UserPaymentConfirmed(ctx context.Context,p *pb.UserPaymentConfirmedRequest)(*pb.UserBookingResponce,error){
+	resp, err := c.SVC.PaymentConfirmedSVC(ctx,p)
+	if err != nil {
+		log.Printf("error while adding traveller details", err.Error())
+		return nil, err
+	}
+	return resp, nil
+}
