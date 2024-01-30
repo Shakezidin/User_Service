@@ -2,7 +2,9 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strconv"
 
 	cpb "github.com/Shakezidin/pkg/user/client/pb"
 	pb "github.com/Shakezidin/pkg/user/pb"
@@ -11,7 +13,11 @@ import (
 func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTravellerResponse, error) {
 	var ctx = context.Background()
 	var travellerDetails []*cpb.TravellerDetails
-
+	userid, _ := strconv.Atoi(p.UserId)
+	user, err := c.Repo.FindUserById(uint(userid))
+	if err != nil {
+		return &pb.UserTravellerResponse{}, errors.New("user not found")
+	}
 	for _, dtls := range p.TravellerDetails {
 		var travellerDetail cpb.TravellerDetails
 		travellerDetail.ActivityId = dtls.ActivityId
@@ -25,6 +31,8 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 		UserId:           p.UserId,
 		TravellerDetails: travellerDetails,
 		PackageId:        p.PackageId,
+		Email:            user.Email,
+		Username:         user.Name,
 	})
 
 	if err != nil {
@@ -41,5 +49,3 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 		RefId:              resp.RefId,
 	}, nil
 }
-
-

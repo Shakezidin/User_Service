@@ -36,6 +36,7 @@ func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 			Packagename:      result.Packagename,
 			Startlocation:    result.Startlocation,
 			Startdate:        result.Startdate,
+			Starttime:        result.Starttime,
 			Enddate:          result.Enddate,
 			Price:            result.Price,
 			Image:            result.Image,
@@ -74,6 +75,7 @@ func (c *UserSVC) ViewPackagesSvc(p *pb.UserView) (*pb.UserPackages, error) {
 			pkg.AvailableSpace = pakg.AvailableSpace
 			pkg.Price = int64(pakg.Price)
 			pkg.Startdate = pakg.Startdate
+			pkg.Starttime = pakg.Starttime
 			pkg.Startlocation = pakg.Startlocation
 			pkg.Description = pakg.Description
 			pkgs = append(pkgs, &pkg)
@@ -139,6 +141,7 @@ func (c *UserSVC) FilterPackageSvc(p *pb.UserFilter) (*pb.UserPackages, error) {
 			pkg.AvailableSpace = pakg.AvailableSpace
 			pkg.Price = int64(pakg.Price)
 			pkg.Startdate = pakg.Startdate
+			pkg.Starttime = pakg.Starttime
 			pkg.Startlocation = pakg.Startlocation
 			pkg.Description = pakg.Description
 			pkgs = append(pkgs, &pkg)

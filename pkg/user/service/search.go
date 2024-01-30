@@ -42,6 +42,7 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 		pkg.AvailableSpace = pakg.AvailableSpace
 		pkg.Price = int64(pakg.Price)
 		pkg.Startdate = pakg.Startdate
+		pkg.Starttime = pakg.Starttime
 		pkg.Startlocation = pakg.Startlocation
 		pkg.Description = pakg.Description
 		pkg.CoorinatorId = pakg.CoorinatorId
