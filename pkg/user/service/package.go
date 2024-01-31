@@ -153,3 +153,30 @@ func (c *UserSVC) FilterPackageSvc(p *pb.UserFilter) (*pb.UserPackages, error) {
 		Packages: pkgs,
 	}, nil
 }
+
+func (c *UserSVC) ViewFoodMenusSvc(p *pb.UserView) (*pb.UserFoodMenus, error) {
+	var ctx context.Context
+	rslt, err := c.codClient.CoordinatorViewFoodMenu(ctx, &cpb.View{
+		Id:   p.Id,
+		Page: p.Page,
+	})
+	if err != nil {
+		fmt.Println("fetching food menu error")
+		return &pb.UserFoodMenus{}, err
+	}
+
+	var foodmenus []*pb.UserFoodMenu
+	for _, menu := range rslt.Foodmenu {
+		foodmenus = append(foodmenus, &pb.UserFoodMenu{
+			FoodMenuId: menu.FoodMenuId,
+			PackageID:  menu.PackageID,
+			Breakfast:  menu.Breakfast,
+			Lunch:      menu.Lunch,
+			Dinner:     menu.Dinner,
+			Date:       menu.Date,
+		})
+	}
+	return &pb.UserFoodMenus{
+		Foodmenu: foodmenus,
+	}, nil
+}

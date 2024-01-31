@@ -42,3 +42,12 @@ func (c *UserHandler)UserFilterPackage(ctx context.Context,p *pb.UserFilter)(*pb
 	}
 	return resp, nil
 }
+
+func (c *UserHandler)UserViewFoodMenu(ctx context.Context,p *pb.UserView)(*pb.UserFoodMenus,error){
+	resp, err := c.SVC.ViewFoodMenusSvc(p)
+	if err != nil {
+		log.Printf("fetching food menus error", err.Error())
+		return nil, err
+	}
+	return resp, nil
+}

@@ -8,6 +8,7 @@ option go_package = ".";
 service Coordinator {
     rpc AvailablePackages(View) returns (PackagesResponce);
     rpc CoordinatorViewPackage(View)returns(Package);
+    rpc CoordinatorViewFoodMenu(View)returns(FoodMenus);
     rpc CoordinatorViewDestination(View)returns(Destination);
     rpc CoordinatorViewActivity(View)returns(Activity);
     rpc ViewCatagories(View)returns(Catagories);
@@ -19,6 +20,18 @@ service Coordinator {
     rpc PaymentConfirmed(PaymentConfirmedRequest)returns(BookingResponce);
 }
 
+message FoodMenus{
+    repeated FoodMenu Foodmenu= 1;
+}
+
+message    FoodMenu {
+    int64  FoodMenuId = 1;
+    int64  PackageID = 2;
+    string Breakfast = 3;
+    string Lunch     = 4;
+    string Dinner    = 5;  
+    string Date      = 6;  
+}
 message PaymentConfirmedRequest{
     string email = 1;
     string ReferenceID = 2;

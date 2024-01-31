@@ -8,7 +8,6 @@ service User {
     rpc UserLoginRequest(UserLogin) returns (UserLoginResponce);
     rpc UserSignupRequest(UserSignup) returns(UserResponce);
     rpc UserSignupVerifyRequest(UserVerify)returns(UserResponce);
-    rpc UserViewPackage(UserView)returns(UserPackage);
     rpc UserForgetPassword(UserforgetPassword)returns(UserResponce);
     rpc UserForgetPasswordVerify(UserforgetPasswordVerify)returns(UserResponce);
     rpc UserNewPassword(Usernewpassword)returns(UserResponce);
@@ -18,6 +17,8 @@ service User {
     rpc UserViewCatagories(UserView)returns(UserCategories);
     rpc UserSearchPacakge(UserSearch)returns(UserPackages);
     rpc UserFilterPackage(UserFilter)returns(UserPackages);
+    rpc UserViewPackage(UserView)returns(UserPackage);
+    rpc UserViewFoodMenu(UserView)returns(UserFoodMenus);
     rpc UserTravellerDetails(UserTravellerRequest)returns(UserTravellerResponse);
     rpc UserOfflineBooking(UserBooking)returns(UserBookingResponce);
     rpc UserViewPackages (UserView)returns(UserPackages);
@@ -125,6 +126,19 @@ message UserCategory{
     string categoryName = 2;
 }
 
+message UserFoodMenus{
+    repeated UserFoodMenu Foodmenu= 1;
+}
+
+message    UserFoodMenu {
+    int64  FoodMenuId = 1;
+    int64  PackageID = 2;
+    string Breakfast = 3;
+    string Lunch     = 4;
+    string Dinner    = 5;  
+    string Date      = 6;  
+}
+
 message UserActivity{
     int64  activityId = 1;
     string activityname = 2;
@@ -146,6 +160,8 @@ message UserDestination{
     string image = 6;
     repeated UserActivity activity = 7;
     int64  PackageID = 8;
+    string TransportationMode = 9;
+    string ArrivalLocation   = 10;
 }
 
 message UserPackage{
@@ -167,6 +183,7 @@ message UserPackage{
     UserCategory category = 16;
     repeated UserDestination Destinations = 17;
 }
+
 
 
 message UserView{

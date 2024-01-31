@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Coordinator_AvailablePackages_FullMethodName          = "/pb.Coordinator/AvailablePackages"
 	Coordinator_CoordinatorViewPackage_FullMethodName     = "/pb.Coordinator/CoordinatorViewPackage"
+	Coordinator_CoordinatorViewFoodMenu_FullMethodName    = "/pb.Coordinator/CoordinatorViewFoodMenu"
 	Coordinator_CoordinatorViewDestination_FullMethodName = "/pb.Coordinator/CoordinatorViewDestination"
 	Coordinator_CoordinatorViewActivity_FullMethodName    = "/pb.Coordinator/CoordinatorViewActivity"
 	Coordinator_ViewCatagories_FullMethodName             = "/pb.Coordinator/ViewCatagories"
@@ -38,6 +39,7 @@ const (
 type CoordinatorClient interface {
 	AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponce, error)
 	CoordinatorViewPackage(ctx context.Context, in *View, opts ...grpc.CallOption) (*Package, error)
+	CoordinatorViewFoodMenu(ctx context.Context, in *View, opts ...grpc.CallOption) (*FoodMenus, error)
 	CoordinatorViewDestination(ctx context.Context, in *View, opts ...grpc.CallOption) (*Destination, error)
 	CoordinatorViewActivity(ctx context.Context, in *View, opts ...grpc.CallOption) (*Activity, error)
 	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error)
@@ -69,6 +71,15 @@ func (c *coordinatorClient) AvailablePackages(ctx context.Context, in *View, opt
 func (c *coordinatorClient) CoordinatorViewPackage(ctx context.Context, in *View, opts ...grpc.CallOption) (*Package, error) {
 	out := new(Package)
 	err := c.cc.Invoke(ctx, Coordinator_CoordinatorViewPackage_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) CoordinatorViewFoodMenu(ctx context.Context, in *View, opts ...grpc.CallOption) (*FoodMenus, error) {
+	out := new(FoodMenus)
+	err := c.cc.Invoke(ctx, Coordinator_CoordinatorViewFoodMenu_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -162,6 +173,7 @@ func (c *coordinatorClient) PaymentConfirmed(ctx context.Context, in *PaymentCon
 type CoordinatorServer interface {
 	AvailablePackages(context.Context, *View) (*PackagesResponce, error)
 	CoordinatorViewPackage(context.Context, *View) (*Package, error)
+	CoordinatorViewFoodMenu(context.Context, *View) (*FoodMenus, error)
 	CoordinatorViewDestination(context.Context, *View) (*Destination, error)
 	CoordinatorViewActivity(context.Context, *View) (*Activity, error)
 	ViewCatagories(context.Context, *View) (*Catagories, error)
@@ -183,6 +195,9 @@ func (UnimplementedCoordinatorServer) AvailablePackages(context.Context, *View) 
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewPackage(context.Context, *View) (*Package, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewPackage not implemented")
+}
+func (UnimplementedCoordinatorServer) CoordinatorViewFoodMenu(context.Context, *View) (*FoodMenus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewFoodMenu not implemented")
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewDestination(context.Context, *View) (*Destination, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewDestination not implemented")
@@ -256,6 +271,24 @@ func _Coordinator_CoordinatorViewPackage_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CoordinatorServer).CoordinatorViewPackage(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_CoordinatorViewFoodMenu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).CoordinatorViewFoodMenu(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_CoordinatorViewFoodMenu_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).CoordinatorViewFoodMenu(ctx, req.(*View))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -436,6 +469,10 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CoordinatorViewPackage",
 			Handler:    _Coordinator_CoordinatorViewPackage_Handler,
+		},
+		{
+			MethodName: "CoordinatorViewFoodMenu",
+			Handler:    _Coordinator_CoordinatorViewFoodMenu_Handler,
 		},
 		{
 			MethodName: "CoordinatorViewDestination",
