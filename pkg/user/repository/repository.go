@@ -56,7 +56,7 @@ func (c *UserRepo) FindUserById(id uint) (*DOM.User, error) {
 }
 
 func (c *UserRepo) UpdateUser(user *DOM.User) error {
-	if err := c.db.Save(user).Error; err != nil {
+	if err := c.db.Save(&user).Error; err != nil {
 		return err
 	}
 	return nil

@@ -25,4 +25,7 @@ type UserSVCInter interface {
 	OnlinePaymentSVC(ctx context.Context,p *pb.UserBooking)(*pb.UserOnlinePaymentResponse, error)
 	FilterPackageSvc(p *pb.UserFilter)(*pb.UserPackages,error)
 	PaymentConfirmedSVC(ctx context.Context, p *pb.UserPaymentConfirmedRequest) (*pb.UserBookingResponce, error)
+	ViewHistorySvc(p *pb.UserView) (*pb.UserHistories, error)
+	ViewBookingSvc(p *pb.UserView)(*pb.UserHistory,error)
+	CancelBookingSvc(p *pb.UserView)(*pb.UserResponce,error)
 }

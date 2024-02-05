@@ -14,6 +14,7 @@ type User struct {
 	Password string `gorm:"not null"`
 	Role     string `gorm:"not null"`
 	Isblock  bool   `gorm:"default:false"`
+	Wallet   int    `gorm:"default:0"`
 }
 
 type EmailMessage struct {

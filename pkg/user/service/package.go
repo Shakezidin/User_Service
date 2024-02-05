@@ -155,7 +155,7 @@ func (c *UserSVC) FilterPackageSvc(p *pb.UserFilter) (*pb.UserPackages, error) {
 }
 
 func (c *UserSVC) ViewFoodMenusSvc(p *pb.UserView) (*pb.UserFoodMenus, error) {
-	var ctx context.Context
+	var ctx = context.Background()
 	rslt, err := c.codClient.CoordinatorViewFoodMenu(ctx, &cpb.View{
 		Id:   p.Id,
 		Page: p.Page,
