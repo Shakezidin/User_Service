@@ -29,8 +29,10 @@ func (c *UserSVC) ViewHistorySvc(p *pb.UserView) (*pb.UserHistories, error) {
 			CancelledStatus: hstry.CancelledStatus,
 			TotalPrice:      int64(hstry.TotalPrice),
 			UserId:          int64(hstry.UserId),
-			BookingId:       hstry.BookDate,
+			BookingId:       hstry.BookingId,
+			BookDate:        hstry.BookDate,
 			StartDate:       hstry.StartDate,
+			PaidAmount:      hstry.PaidAmount,
 		})
 	}
 
@@ -69,6 +71,7 @@ func (c *UserSVC) ViewBookingSvc(p *pb.UserView) (*pb.UserHistory, error) {
 		BookingId:       result.BookDate,
 		StartDate:       result.StartDate,
 		Travellers:      traveller,
+		PaidAmount:      result.PaidAmount,
 	}, nil
 }
 

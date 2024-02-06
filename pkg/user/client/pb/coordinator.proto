@@ -45,6 +45,7 @@ message History{
     string BookDate = 8;
     string StartDate = 9;
     repeated TravellerDetails travellers = 10;
+    int64 PaidAmount = 11;
 }
 
 message FoodMenus{
