@@ -13,7 +13,7 @@ service Coordinator {
     rpc CoordinatorViewActivity(View)returns(Activity);
     rpc ViewCatagories(View)returns(Catagories);
     rpc PackageSearch(Search)returns(PackagesResponce);
-    rpc TravellerDetails(TravellerRequest)returns(TravellerResponse);
+    rpc UserTravellerDetails(TravellerRequest)returns(TravellerResponse);
     rpc OfflineBooking(Booking)returns(BookingResponce);
     rpc OnlinePayment(Booking)returns(OnlinePaymentResponse);
     rpc FilterPackage(Filter)returns(PackagesResponce);
@@ -141,7 +141,7 @@ message Catagories{
 
 message View{
     int64 Id = 1;
-    bool status = 2;
+    string status = 2;
     int64 page = 3;
 }
 

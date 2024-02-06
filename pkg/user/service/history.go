@@ -11,8 +11,9 @@ import (
 func (c *UserSVC) ViewHistorySvc(p *pb.UserView) (*pb.UserHistories, error) {
 	var ctx = context.Background()
 	result, err := c.codClient.VeiwHistory(ctx, &cpb.View{
-		Id:   p.Id,
-		Page: p.Page,
+		Id:     p.Id,
+		Page:   p.Page,
+		Status: "false",
 	})
 
 	if err != nil {

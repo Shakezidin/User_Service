@@ -27,7 +27,7 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 
 		travellerDetails = append(travellerDetails, &travellerDetail)
 	}
-	resp, err := c.codClient.TravellerDetails(ctx, &cpb.TravellerRequest{
+	resp, err := c.codClient.UserTravellerDetails(ctx, &cpb.TravellerRequest{
 		UserId:           p.UserId,
 		TravellerDetails: travellerDetails,
 		PackageId:        p.PackageId,
