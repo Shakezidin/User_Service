@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
 func (c *UserHandler) UserSearchPacakge(ctx context.Context, p *pb.UserSearch) (*pb.UserPackages, error) {

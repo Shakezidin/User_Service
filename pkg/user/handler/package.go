@@ -3,7 +3,7 @@ package handler
 import (
 	"log"
 
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 	"golang.org/x/net/context"
 )
 

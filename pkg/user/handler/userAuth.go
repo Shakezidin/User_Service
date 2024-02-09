@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	cpb "github.com/Shakezidin/pkg/user/pb"
+	cpb "github.com/Shakezidin/pkg/user/userpb"
 	"golang.org/x/net/context"
 )
 

@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	cpb "github.com/Shakezidin/pkg/user/pb"
+	cpb "github.com/Shakezidin/pkg/user/userpb"
 	"golang.org/x/net/context"
 )
 
@@ -54,10 +54,34 @@ func (c *UserHandler) NewPassword(ctx context.Context, p *cpb.Usernewpassword) (
 	return resp, nil
 }
 
-func (c *UserHandler)ProfileUpdate(ctx context.Context,p *cpb.UserSignup)(*cpb.UserResponce,error){
+func (c *UserHandler) ProfileUpdate(ctx context.Context, p *cpb.UserSignup) (*cpb.UserResponce, error) {
 	resp, err := c.SVC.UpdateProfileSVC(p)
 	if err != nil {
 		log.Printf("Unable to update profile, err: %v", err.Error())
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *UserHandler) UsersCount(ctx context.Context, p *cpb.UserView) (*cpb.Usercount, error) {
+	resp, err := c.SVC.UserCountSVC(p)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *UserHandler) UserViewUsers(ctx context.Context, p *cpb.UserView) (*cpb.UserUsers, error) {
+	resp, err := c.SVC.ViewUsersSVC(p)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *UserHandler) UserViewUser(ctx context.Context, p *cpb.UserView) (*cpb.UserSignup, error) {
+	resp, err := c.SVC.ViewUserSVC(p)
+	if err != nil {
 		return nil, err
 	}
 	return resp, nil

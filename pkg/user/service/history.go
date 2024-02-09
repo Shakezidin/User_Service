@@ -5,19 +5,19 @@ import (
 	"errors"
 
 	cpb "github.com/Shakezidin/pkg/user/client/pb"
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
 func (c *UserSVC) ViewHistorySvc(p *pb.UserView) (*pb.UserHistories, error) {
 	var ctx = context.Background()
-	result, err := c.codClient.VeiwHistory(ctx, &cpb.View{
+	result, err := c.codClient.ViewHistory(ctx, &cpb.View{
 		Id:     p.Id,
 		Page:   p.Page,
 		Status: "false",
 	})
 
 	if err != nil {
-		return &pb.UserHistories{}, errors.New("error while fetching history")
+		return &pb.UserHistories{}, err
 	}
 
 	var history []*pb.UserHistory

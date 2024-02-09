@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
 func (c *UserHandler) UserViewHistory(ctx context.Context, p *pb.UserView) (*pb.UserHistories, error) {

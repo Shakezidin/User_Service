@@ -31,7 +31,7 @@ const (
 	Coordinator_OnlinePayment_FullMethodName              = "/pb.Coordinator/OnlinePayment"
 	Coordinator_FilterPackage_FullMethodName              = "/pb.Coordinator/FilterPackage"
 	Coordinator_PaymentConfirmed_FullMethodName           = "/pb.Coordinator/PaymentConfirmed"
-	Coordinator_VeiwHistory_FullMethodName                = "/pb.Coordinator/VeiwHistory"
+	Coordinator_ViewHistory_FullMethodName                = "/pb.Coordinator/ViewHistory"
 	Coordinator_ViewBooking_FullMethodName                = "/pb.Coordinator/ViewBooking"
 	Coordinator_CancelBooking_FullMethodName              = "/pb.Coordinator/CancelBooking"
 )
@@ -52,7 +52,7 @@ type CoordinatorClient interface {
 	OnlinePayment(ctx context.Context, in *Booking, opts ...grpc.CallOption) (*OnlinePaymentResponse, error)
 	FilterPackage(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*PackagesResponce, error)
 	PaymentConfirmed(ctx context.Context, in *PaymentConfirmedRequest, opts ...grpc.CallOption) (*BookingResponce, error)
-	VeiwHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error)
+	ViewHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error)
 	ViewBooking(ctx context.Context, in *View, opts ...grpc.CallOption) (*History, error)
 	CancelBooking(ctx context.Context, in *View, opts ...grpc.CallOption) (*Responce, error)
 }
@@ -173,9 +173,9 @@ func (c *coordinatorClient) PaymentConfirmed(ctx context.Context, in *PaymentCon
 	return out, nil
 }
 
-func (c *coordinatorClient) VeiwHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error) {
+func (c *coordinatorClient) ViewHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error) {
 	out := new(Histories)
-	err := c.cc.Invoke(ctx, Coordinator_VeiwHistory_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Coordinator_ViewHistory_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +216,7 @@ type CoordinatorServer interface {
 	OnlinePayment(context.Context, *Booking) (*OnlinePaymentResponse, error)
 	FilterPackage(context.Context, *Filter) (*PackagesResponce, error)
 	PaymentConfirmed(context.Context, *PaymentConfirmedRequest) (*BookingResponce, error)
-	VeiwHistory(context.Context, *View) (*Histories, error)
+	ViewHistory(context.Context, *View) (*Histories, error)
 	ViewBooking(context.Context, *View) (*History, error)
 	CancelBooking(context.Context, *View) (*Responce, error)
 	mustEmbedUnimplementedCoordinatorServer()
@@ -262,8 +262,8 @@ func (UnimplementedCoordinatorServer) FilterPackage(context.Context, *Filter) (*
 func (UnimplementedCoordinatorServer) PaymentConfirmed(context.Context, *PaymentConfirmedRequest) (*BookingResponce, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PaymentConfirmed not implemented")
 }
-func (UnimplementedCoordinatorServer) VeiwHistory(context.Context, *View) (*Histories, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method VeiwHistory not implemented")
+func (UnimplementedCoordinatorServer) ViewHistory(context.Context, *View) (*Histories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewHistory not implemented")
 }
 func (UnimplementedCoordinatorServer) ViewBooking(context.Context, *View) (*History, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewBooking not implemented")
@@ -500,20 +500,20 @@ func _Coordinator_PaymentConfirmed_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Coordinator_VeiwHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Coordinator_ViewHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(View)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoordinatorServer).VeiwHistory(ctx, in)
+		return srv.(CoordinatorServer).ViewHistory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Coordinator_VeiwHistory_FullMethodName,
+		FullMethod: Coordinator_ViewHistory_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoordinatorServer).VeiwHistory(ctx, req.(*View))
+		return srv.(CoordinatorServer).ViewHistory(ctx, req.(*View))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -610,8 +610,8 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Coordinator_PaymentConfirmed_Handler,
 		},
 		{
-			MethodName: "VeiwHistory",
-			Handler:    _Coordinator_VeiwHistory_Handler,
+			MethodName: "ViewHistory",
+			Handler:    _Coordinator_ViewHistory_Handler,
 		},
 		{
 			MethodName: "ViewBooking",

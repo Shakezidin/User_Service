@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/Shakezidin/config"
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 	"github.com/Shakezidin/utils"
 	"gorm.io/gorm"
 )
@@ -79,7 +79,7 @@ func (c *UserSVC) ForgetPasswordVerifySVC(p *pb.UserforgetPasswordVerify) (*pb.U
 	}
 
 	userid := strconv.Itoa(int(user.ID))
-	token, err := utils.GenerateToken(user.Email, user.Role, userid, config.LoadConfig().SECRETKEY)
+	token, _, err := utils.GenerateToken(user.Email, user.Role, userid, config.LoadConfig().SECRETKEY)
 	if err != nil {
 		log.Printf("unable to generate token for user %v, err: %v", user.Email, err.Error())
 		return nil, errors.New("error while generating JWT")
@@ -159,3 +159,54 @@ func (c *UserSVC) UpdateProfileSVC(p *pb.UserSignup) (*pb.UserResponce, error) {
 		Id:      int64(user.ID),
 	}, nil
 }
+
+func (c *UserSVC) UserCountSVC(p *pb.UserView) (*pb.Usercount, error) {
+	count := c.Repo.UserCount()
+
+	return &pb.Usercount{
+		Usercount: count,
+	}, nil
+}
+
+func (c *UserSVC) ViewUsersSVC(p *pb.UserView) (*pb.UserUsers, error) {
+	offset := 10 * (p.Page - 1)
+	limit := 10
+
+	user, err := c.Repo.FindUsers(int(offset), limit)
+	if err != nil {
+		return nil, errors.New("No users found")
+	}
+	var users []*pb.UserSignup
+
+	for _, usr := range user {
+		phone := strconv.Itoa(usr.Phone)
+		users = append(users, &pb.UserSignup{
+			Name:     usr.Name,
+			Email:    usr.Email,
+			Phone:    phone,
+			Role:     usr.Role,
+			Id:       int64(usr.ID),
+		})
+	}
+
+	return &pb.UserUsers{
+		Users: users,
+	}, nil
+}
+
+func (c *UserSVC) ViewUserSVC(p *pb.UserView) (*pb.UserSignup, error) {
+	user, err := c.Repo.FindUserById(uint(p.Id))
+	if err != nil {
+		return nil, errors.New("No user found")
+	}
+
+	phone := strconv.Itoa(user.Phone)
+	return &pb.UserSignup{
+		Name:  user.Name,
+		Email: user.Email,
+		Phone: phone,
+		Role:  user.Role,
+		Id:    int64(user.ID),
+	}, nil
+}
+

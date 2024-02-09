@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	cpb "github.com/Shakezidin/pkg/user/client/pb"
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
 func (c *UserSVC) ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error) {

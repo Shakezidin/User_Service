@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	cpb "github.com/Shakezidin/pkg/user/client/pb"
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
 func (c *UserSVC) OnlinePaymentSVC(ctx context.Context, p *pb.UserBooking) (*pb.UserOnlinePaymentResponse, error) {

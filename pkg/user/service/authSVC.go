@@ -11,7 +11,7 @@ import (
 
 	"github.com/Shakezidin/config"
 	DOM "github.com/Shakezidin/pkg/dom"
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 
 	"github.com/Shakezidin/utils"
 	"gorm.io/gorm"
@@ -134,14 +134,15 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 		return nil, fmt.Errorf("password mismatch for user %v", p.Email)
 	}
 	userIdstr := strconv.Itoa(int(user.ID))
-	token, err := utils.GenerateToken(p.Email, p.Role, userIdstr, config.LoadConfig().SECRETKEY)
+	token, rt, err := utils.GenerateToken(p.Email, p.Role, userIdstr, config.LoadConfig().SECRETKEY)
 	if err != nil {
 		log.Printf("unable to generate token for user %v, err: %v", p.Email, err.Error())
 		return nil, err
 	}
 
 	return &pb.UserLoginResponce{
-		Token: token,
+		Token:        token,
+		RefreshToken: rt,
 	}, nil
 
 }

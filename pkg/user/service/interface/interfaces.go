@@ -3,7 +3,7 @@ package interfaces
 import (
 	"context"
 
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
 type UserSVCInter interface {
@@ -28,4 +28,8 @@ type UserSVCInter interface {
 	ViewHistorySvc(p *pb.UserView) (*pb.UserHistories, error)
 	ViewBookingSvc(p *pb.UserView)(*pb.UserHistory,error)
 	CancelBookingSvc(p *pb.UserView)(*pb.UserResponce,error)
+	RefreshTokenSVC(p *pb.TokenData) (*pb.UserLoginResponce, error)
+	UserCountSVC(p *pb.UserView)(*pb.Usercount,error)
+	ViewUsersSVC(p *pb.UserView) (*pb.UserUsers, error)
+	ViewUserSVC(p *pb.UserView)(*pb.UserSignup,error)
 }

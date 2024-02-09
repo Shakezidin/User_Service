@@ -18,7 +18,7 @@ service Coordinator {
     rpc OnlinePayment(Booking)returns(OnlinePaymentResponse);
     rpc FilterPackage(Filter)returns(PackagesResponce);
     rpc PaymentConfirmed(PaymentConfirmedRequest)returns(BookingResponce);
-    rpc VeiwHistory(View)returns(Histories);
+    rpc ViewHistory(View)returns(Histories);
     rpc ViewBooking(View)returns(History);
     rpc CancelBooking(View)returns(Responce);
 }
