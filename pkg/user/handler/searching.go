@@ -2,16 +2,14 @@ package handler
 
 import (
 	"context"
-	"log"
 
 	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
-func (c *UserHandler) UserSearchPacakge(ctx context.Context, p *pb.UserSearch) (*pb.UserPackages, error) {
+func (c *UserHandler) UserSearchPackage(ctx context.Context, p *pb.UserSearch) (*pb.UserPackages, error) {
 	resp, err := c.SVC.SearchPackageSvc(p)
 	if err != nil {
-		log.Printf("fetching package error", err.Error())
-		return nil, err
+		return resp, err
 	}
 	return resp, nil
 }

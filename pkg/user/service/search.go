@@ -2,19 +2,21 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	cpb "github.com/Shakezidin/pkg/user/client/pb"
 	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
+// SearchPackageSvc searches for packages based on the provided search parameters.
 func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
-	var ctxt = context.Background()
+	// Create a context
+	ctx := context.Background()
+
 	destinations := make([]string, len(p.Destination))
-	for _, dstn := range p.Destination {
-		destinations = append(destinations, dstn)
-	}
-	result, err := c.codClient.PackageSearch(ctxt, &cpb.Search{
+	copy(destinations, p.Destination)
+
+	// Call the coordinator service to search for packages
+	result, err := c.codClient.PackageSearch(ctx, &cpb.Search{
 		CatagoryId:       p.CatagoryId,
 		Travelercount:    p.Travelercount,
 		PickupPlace:      p.PickupPlace,
@@ -26,31 +28,31 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 		Destination:      destinations,
 	})
 	if err != nil {
-		fmt.Println("fetching available packages error")
 		return nil, err
 	}
 
+	// Process the retrieved packages
 	var pkgs []*pb.UserPackage
 	for _, pakg := range result.Packages {
-		var pkg pb.UserPackage
-		pkg.PackageId = pakg.PackageId
-		pkg.Destination = pakg.Destination
-		pkg.DestinationCount = int64(pakg.DestinationCount)
-		pkg.Enddate = pakg.Enddate
-		pkg.Image = pakg.Image
-		pkg.Packagename = pakg.Packagename
-		pkg.AvailableSpace = pakg.AvailableSpace
-		pkg.Price = int64(pakg.Price)
-		pkg.Startdate = pakg.Startdate
-		pkg.Starttime = pakg.Starttime
-		pkg.Startlocation = pakg.Startlocation
-		pkg.Description = pakg.Description
-		pkg.CoorinatorId = pakg.CoorinatorId
-		pkgs = append(pkgs, &pkg)
+		pkgs = append(pkgs, &pb.UserPackage{
+			PackageId:        pakg.PackageId,
+			Destination:      pakg.Destination,
+			DestinationCount: int64(pakg.DestinationCount),
+			Enddate:          pakg.Enddate,
+			Image:            pakg.Image,
+			Packagename:      pakg.Packagename,
+			AvailableSpace:   pakg.AvailableSpace,
+			Price:            int64(pakg.Price),
+			Startdate:        pakg.Startdate,
+			Starttime:        pakg.Starttime,
+			Startlocation:    pakg.Startlocation,
+			Description:      pakg.Description,
+			CoorinatorId:     pakg.CoorinatorId,
+		})
 	}
 
+	// Return the packages
 	return &pb.UserPackages{
 		Packages: pkgs,
 	}, nil
-
 }

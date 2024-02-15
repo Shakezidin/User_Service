@@ -34,8 +34,7 @@ func (c *UserHandler) UserSignupVerifyRequest(ctx context.Context, p *cpb.UserVe
 
 	resp, err := c.SVC.VerifySVC(p)
 	if err != nil {
-		log.Printf("Unable to verify %v of email == %v, err: %v", p.Email, err.Error())
-		return nil, err
+		return resp, err
 	}
 	return resp, nil
 }
@@ -47,10 +46,9 @@ func (c *UserHandler) UserLoginRequest(ctx context.Context, p *cpb.UserLogin) (*
 		return nil, errors.New("deadline passed, aborting gRPC call")
 	}
 
-	respnc, err := c.SVC.UserLogin(p)
+	resp, err := c.SVC.UserLogin(p)
 	if err != nil {
-		log.Printf("Unable to login %v of email == %v, err: %v", p.Role, p.Email, err.Error())
-		return nil, err
+		return resp, err
 	}
-	return respnc, nil
+	return resp, nil
 }

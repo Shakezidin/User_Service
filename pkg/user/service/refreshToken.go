@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"log"
 	"strconv"
 
 	"github.com/Shakezidin/config"
@@ -11,17 +10,25 @@ import (
 )
 
 func (c *UserSVC) RefreshTokenSVC(p *pb.TokenData) (*pb.UserLoginResponce, error) {
-	id, _ := strconv.Atoi(p.Id)
-	user, err := c.Repo.FindUserById(uint(id))
+	// Convert string id to integer
+	id, err := strconv.Atoi(p.Id)
 	if err != nil {
-		return nil, errors.New("User not found")
-	}
-	token, refreshToken, err := utils.GenerateToken(user.Email, p.Role, p.Id, config.LoadConfig().SECRETKEY)
-	if err != nil {
-		log.Printf("unable to generate token for user %v, err: %v", p.Email, err.Error())
-		return nil, err
+		return nil, errors.New("invalid user id")
 	}
 
+	// Find user by id
+	user, err := c.Repo.FindUserById(uint(id))
+	if err != nil {
+		return nil, errors.New("user not found")
+	}
+
+	// Generate new tokens
+	token, refreshToken, err := utils.GenerateToken(user.Email, p.Role, p.Id, config.LoadConfig().SECRETKEY)
+	if err != nil {
+		return nil, errors.New("error generating tokens")
+	}
+
+	// Return response with new tokens
 	return &pb.UserLoginResponce{
 		Token:        token,
 		RefreshToken: refreshToken,
