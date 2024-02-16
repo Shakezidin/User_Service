@@ -18,7 +18,7 @@ import (
 )
 
 // SignupSVC handles the user signup process.
-func (c *UserSVC) SignupSVC(p *pb.UserSignup) (*pb.UserResponce, error) {
+func (c *UserSVC) SignupSVC(p *pb.UserSignup) (*pb.UserResponse, error) {
 	// Hash the user's password
 	hashPassword, err := utils.HashPassword(p.Password)
 	if err != nil {
@@ -60,14 +60,14 @@ func (c *UserSVC) SignupSVC(p *pb.UserSignup) (*pb.UserResponce, error) {
 	c.redis.Set(context.Background(), registerUser, userData, time.Minute*2)
 
 	// Return success response
-	return &pb.UserResponce{
+	return &pb.UserResponse{
 		Status:  "success",
 		Message: "user creation initiated, check message for OTP",
 	}, nil
 }
 
 // VerifySVC handles the user verification process.
-func (c *UserSVC) VerifySVC(p *pb.UserVerify) (*pb.UserResponce, error) {
+func (c *UserSVC) VerifySVC(p *pb.UserVerify) (*pb.UserResponse, error) {
 	// Retrieve user data from Redis
 	registerUser := fmt.Sprintf("register_user_%v", p.Email)
 	redisVal := c.redis.Get(context.Background(), registerUser)
@@ -115,15 +115,15 @@ func (c *UserSVC) VerifySVC(p *pb.UserVerify) (*pb.UserResponce, error) {
 	}
 
 	// Return success response
-	return &pb.UserResponce{
+	return &pb.UserResponse{
 		Status:  "Success",
 		Message: "User creation done",
-		Id:      int64(userData.ID),
+		ID:      int64(userData.ID),
 	}, nil
 }
 
 // UserLogin handles the user login process.
-func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
+func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponse, error) {
 	// Find user by email
 	user, err := c.Repo.FindUserByEmail(p.Email)
 	if err != nil {
@@ -147,8 +147,8 @@ func (c *UserSVC) UserLogin(p *pb.UserLogin) (*pb.UserLoginResponce, error) {
 	}
 
 	// Return success response
-	return &pb.UserLoginResponce{
+	return &pb.UserLoginResponse{
 		Token:        token,
-		RefreshToken: rt,
+		Refresh_Token: rt,
 	}, nil
 }

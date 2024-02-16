@@ -15,7 +15,7 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 	ctx := context.Background()
 
 	// Convert UserId to integer
-	userID, err := strconv.Atoi(p.UserId)
+	userID, err := strconv.Atoi(p.User_ID)
 	if err != nil {
 		return nil, errors.New("invalid user ID")
 	}
@@ -30,9 +30,9 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 	var travellerDetails []*cpb.TravellerDetails
 
 	// Iterate over traveller details and populate the slice
-	for _, dtls := range p.TravellerDetails {
+	for _, dtls := range p.Traveller_Details {
 		travellerDetail := &cpb.TravellerDetails{
-			ActivityId: dtls.ActivityId,
+			ActivityId: dtls.Activity_ID,
 			Age:        dtls.Age,
 			Gender:     dtls.Gender,
 			Name:       dtls.Name,
@@ -42,9 +42,9 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 
 	// Call the client to add traveller details
 	resp, err := c.codClient.UserTravellerDetails(ctx, &cpb.TravellerRequest{
-		UserId:           p.UserId,
+		UserId:           p.User_ID,
 		TravellerDetails: travellerDetails,
-		PackageId:        p.PackageId,
+		PackageId:        p.Package_ID,
 		Email:            user.Email,
 		Username:         user.Name,
 	})
@@ -55,11 +55,11 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 
 	// Return the response
 	return &pb.UserTravellerResponse{
-		Status:             resp.Status,
-		PackagePrice:       resp.PackagePrice,
-		ActivityTotalPrice: resp.ActivityTotalPrice,
-		TotalPrice:         resp.TotalPrice,
-		AdvanceAmount:      resp.AdvanceAmount,
-		RefId:              resp.RefId,
+		Status:               resp.Status,
+		Package_Price:        resp.PackagePrice,
+		Activity_Total_Price: resp.ActivityTotalPrice,
+		Total_Price:          resp.TotalPrice,
+		Advance_Amount:       resp.AdvanceAmount,
+		Ref_ID:               resp.RefId,
 	}, nil
 }

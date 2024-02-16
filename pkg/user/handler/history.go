@@ -22,7 +22,7 @@ func (c *UserHandler) UserViewBooking(ctx context.Context, p *pb.UserView) (*pb.
 	return resp, nil
 }
 
-func (c *UserHandler) UserCancelBooking(ctx context.Context, p *pb.UserView) (*pb.UserResponce, error) {
+func (c *UserHandler) UserCancelBooking(ctx context.Context, p *pb.UserView) (*pb.UserResponse, error) {
 	resp, err := c.SVC.CancelBookingSvc(p)
 	if err != nil {
 		return resp, err

@@ -8,7 +8,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-func (c *UserHandler) UserForgetPassword(ctx context.Context, p *cpb.UserforgetPassword) (*cpb.UserResponce, error) {
+func (c *UserHandler) UserForgetPassword(ctx context.Context, p *cpb.UserForget_Password) (*cpb.UserResponse, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
 		return nil, errors.New("deadline passed, aborting gRPC call")
@@ -21,7 +21,7 @@ func (c *UserHandler) UserForgetPassword(ctx context.Context, p *cpb.UserforgetP
 	return resp, nil
 }
 
-func (c *UserHandler) UserForgetPasswordVerify(ctx context.Context, p *cpb.UserforgetPasswordVerify) (*cpb.UserResponce, error) {
+func (c *UserHandler) UserForgetPasswordVerify(ctx context.Context, p *cpb.UserForget_PasswordVerify) (*cpb.UserResponse, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
 		return nil, errors.New("deadline passed, aborting gRPC call")
@@ -34,7 +34,7 @@ func (c *UserHandler) UserForgetPasswordVerify(ctx context.Context, p *cpb.Userf
 	return resp, nil
 }
 
-func (c *UserHandler) UserNewPassword(ctx context.Context, p *cpb.Usernewpassword) (*cpb.UserResponce, error) {
+func (c *UserHandler) UserNewPassword(ctx context.Context, p *cpb.UserNew_Password) (*cpb.UserResponse, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
 		return nil, errors.New("deadline passed, aborting gRPC call")
@@ -47,7 +47,7 @@ func (c *UserHandler) UserNewPassword(ctx context.Context, p *cpb.Usernewpasswor
 	return resp, nil
 }
 
-func (c *UserHandler) UserProfileUpdate(ctx context.Context, p *cpb.UserSignup) (*cpb.UserResponce, error) {
+func (c *UserHandler) UserProfileUpdate(ctx context.Context, p *cpb.UserSignup) (*cpb.UserResponse, error) {
 	resp, err := c.SVC.UpdateProfileSVC(p)
 	if err != nil {
 		return resp, err
@@ -55,7 +55,7 @@ func (c *UserHandler) UserProfileUpdate(ctx context.Context, p *cpb.UserSignup) 
 	return resp, nil
 }
 
-func (c *UserHandler) UsersCount(ctx context.Context, p *cpb.UserView) (*cpb.Usercount, error) {
+func (c *UserHandler) UsersCount(ctx context.Context, p *cpb.UserView) (*cpb.UserCount, error) {
 	resp, err := c.SVC.UserCountSVC(p)
 	if err != nil {
 		return resp, err

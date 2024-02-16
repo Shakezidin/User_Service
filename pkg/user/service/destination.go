@@ -14,7 +14,7 @@ func (c *UserSVC) ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error
 
 	// Call Coordinator service to get destination details
 	result, err := c.codClient.CoordinatorViewDestination(ctx, &cpb.View{
-		Id: p.Id,
+		Id: p.ID,
 	})
 	if err != nil {
 		return nil, err
@@ -25,11 +25,11 @@ func (c *UserSVC) ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error
 	for _, act := range result.Activity {
 		activity := pb.UserActivity{
 			Description:   act.Description,
-			ActivityId:    act.ActivityId,
-			Activityname:  act.Activityname,
+			Activity_ID:    act.ActivityId,
+			Activity_Name:  act.Activityname,
 			Amount:        act.Amount,
 			Date:          act.Date,
-			DestinationId: act.DestinationId,
+			Destination_ID: act.DestinationId,
 			Location:      act.Location,
 			Time:          act.Time,
 		}
@@ -38,12 +38,12 @@ func (c *UserSVC) ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error
 
 	// Create and return UserDestination response
 	return &pb.UserDestination{
-		DestinationName: result.DestinationName,
-		DestinationId:   result.DestinationId,
+		Destination_Name: result.DestinationName,
+		Destination_ID:   result.DestinationId,
 		Description:     result.Description,
-		MaxCapacity:     result.MaxCapacity,
-		PackageID:       result.PackageID,
-		Minprice:        result.Minprice,
+		Max_Capacity:     result.MaxCapacity,
+		Package_ID:       result.PackageID,
+		Min_Price:        result.Minprice,
 		Image:           result.Image,
 		Activity:        activities,
 	}, nil
@@ -56,7 +56,7 @@ func (c *UserSVC) ViewActivitySvc(p *pb.UserView) (*pb.UserActivity, error) {
 
 	// Call Coordinator service to get activity details
 	result, err := c.codClient.CoordinatorViewActivity(ctx, &cpb.View{
-		Id: p.Id,
+		Id: p.ID,
 	})
 	if err != nil {
 		return nil, err
@@ -64,14 +64,14 @@ func (c *UserSVC) ViewActivitySvc(p *pb.UserView) (*pb.UserActivity, error) {
 
 	// Create and return UserActivity response
 	return &pb.UserActivity{
-		ActivityId:    result.ActivityId,
-		Activityname:  result.Activityname,
+		Activity_ID:    result.ActivityId,
+		Activity_Name:  result.Activityname,
 		Description:   result.Description,
 		Location:      result.Location,
-		ActivityType:  result.ActivityType,
+		Activity_Type:  result.ActivityType,
 		Amount:        result.Amount,
 		Date:          result.Date,
 		Time:          result.Time,
-		DestinationId: result.DestinationId,
+		Destination_ID: result.DestinationId,
 	}, nil
 }

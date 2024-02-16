@@ -17,14 +17,14 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 
 	// Call the coordinator service to search for packages
 	result, err := c.codClient.PackageSearch(ctx, &cpb.Search{
-		CatagoryId:       p.CatagoryId,
-		Travelercount:    p.Travelercount,
-		PickupPlace:      p.PickupPlace,
-		Finaldestination: p.Finaldestination,
+		CatagoryId:       p.Category_ID,
+		Travelercount:    p.Traveler_Count,
+		PickupPlace:      p.Pickup_Place,
+		Finaldestination: p.Final_Destination,
 		Date:             p.Date,
 		Page:             p.Page,
-		Enddate:          p.Enddate,
-		MaxDestination:   p.MaxDestination,
+		Enddate:          p.End_Date,
+		MaxDestination:   p.Max_Destination,
 		Destination:      destinations,
 	})
 	if err != nil {
@@ -35,19 +35,19 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 	var pkgs []*pb.UserPackage
 	for _, pakg := range result.Packages {
 		pkgs = append(pkgs, &pb.UserPackage{
-			PackageId:        pakg.PackageId,
-			Destination:      pakg.Destination,
-			DestinationCount: int64(pakg.DestinationCount),
-			Enddate:          pakg.Enddate,
-			Image:            pakg.Image,
-			Packagename:      pakg.Packagename,
-			AvailableSpace:   pakg.AvailableSpace,
-			Price:            int64(pakg.Price),
-			Startdate:        pakg.Startdate,
-			Starttime:        pakg.Starttime,
-			Startlocation:    pakg.Startlocation,
-			Description:      pakg.Description,
-			CoorinatorId:     pakg.CoorinatorId,
+			Package_ID:        pakg.PackageId,
+			Destination:       pakg.Destination,
+			Destination_Count: int64(pakg.DestinationCount),
+			End_Date:          pakg.Enddate,
+			Image:             pakg.Image,
+			Package_Name:      pakg.Packagename,
+			Available_Space:   pakg.AvailableSpace,
+			Price:             int64(pakg.Price),
+			Start_Date:        pakg.Startdate,
+			Start_Time:        pakg.Starttime,
+			Start_Location:    pakg.Startlocation,
+			Description:       pakg.Description,
+			Coordinator_ID:    pakg.CoorinatorId,
 		})
 	}
 

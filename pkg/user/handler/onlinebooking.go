@@ -14,7 +14,7 @@ func (c *UserHandler) UserOnlinePayment(ctx context.Context, p *pb.UserBooking) 
 	return resp, nil
 }
 
-func (c *UserHandler) UserPaymentConfirmed(ctx context.Context, p *pb.UserPaymentConfirmedRequest) (*pb.UserBookingResponce, error) {
+func (c *UserHandler) UserPaymentConfirmed(ctx context.Context, p *pb.UserPaymentConfirmedRequest) (*pb.UserBookingResponse, error) {
 	resp, err := c.SVC.PaymentConfirmedSVC(ctx, p)
 	if err != nil {
 		return resp, err

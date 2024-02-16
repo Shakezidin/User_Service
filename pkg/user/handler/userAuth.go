@@ -2,21 +2,17 @@ package handler
 
 import (
 	"errors"
-	"fmt"
-	"log"
 	"time"
 
 	cpb "github.com/Shakezidin/pkg/user/userpb"
 	"golang.org/x/net/context"
 )
 
-func (c *UserHandler) UserSignupRequest(ctx context.Context, p *cpb.UserSignup) (*cpb.UserResponce, error) {
+func (c *UserHandler) UserSignupRequest(ctx context.Context, p *cpb.UserSignup) (*cpb.UserResponse, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
-		log.Println("deadline passed, aborting gRPC call")
 		return nil, errors.New("deadline passed, aborting gRPC call")
 	}
-	fmt.Println("hello")
 	result, err := c.SVC.SignupSVC(p)
 	if err != nil {
 		return nil, err
@@ -25,10 +21,9 @@ func (c *UserHandler) UserSignupRequest(ctx context.Context, p *cpb.UserSignup) 
 	return result, nil
 }
 
-func (c *UserHandler) UserSignupVerifyRequest(ctx context.Context, p *cpb.UserVerify) (*cpb.UserResponce, error) {
+func (c *UserHandler) UserSignupVerifyRequest(ctx context.Context, p *cpb.UserVerify) (*cpb.UserResponse, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
-		log.Println("deadline passed, aborting gRPC call")
 		return nil, errors.New("deadline passed, aborting gRPC call")
 	}
 
@@ -39,10 +34,9 @@ func (c *UserHandler) UserSignupVerifyRequest(ctx context.Context, p *cpb.UserVe
 	return resp, nil
 }
 
-func (c *UserHandler) UserLoginRequest(ctx context.Context, p *cpb.UserLogin) (*cpb.UserLoginResponce, error) {
+func (c *UserHandler) UserLoginRequest(ctx context.Context, p *cpb.UserLogin) (*cpb.UserLoginResponse, error) {
 	deadline, ok := ctx.Deadline()
 	if ok && deadline.Before(time.Now()) {
-		log.Println("deadline passed, aborting gRPC call")
 		return nil, errors.New("deadline passed, aborting gRPC call")
 	}
 

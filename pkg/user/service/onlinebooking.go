@@ -11,7 +11,7 @@ import (
 func (c *UserSVC) OnlinePaymentSVC(ctx context.Context, p *pb.UserBooking) (*pb.UserOnlinePaymentResponse, error) {
 	// Call Coordinator service to process online payment
 	result, err := c.codClient.OnlinePayment(ctx, &cpb.Booking{
-		RefId: p.RefId,
+		RefId: p.Ref_ID,
 		Typ:   p.Typ,
 	})
 	if err != nil {
@@ -20,23 +20,23 @@ func (c *UserSVC) OnlinePaymentSVC(ctx context.Context, p *pb.UserBooking) (*pb.
 
 	// Create and return UserOnlinePaymentResponse
 	return &pb.UserOnlinePaymentResponse{
-		UserId:           result.UserId,
-		TotalFare:        result.TotalFare,
-		BookingReference: result.BookingReference,
-		Email:            result.Email,
-		OrderId:          result.OrderId,
+		User_ID:           result.UserId,
+		Total_Fare:        result.TotalFare,
+		Booking_Reference: result.BookingReference,
+		Email:             result.Email,
+		Order_ID:          result.OrderId,
 	}, nil
 }
 
 // PaymentConfirmedSVC handles the user request for confirming payment.
-func (c *UserSVC) PaymentConfirmedSVC(ctx context.Context, p *pb.UserPaymentConfirmedRequest) (*pb.UserBookingResponce, error) {
+func (c *UserSVC) PaymentConfirmedSVC(ctx context.Context, p *pb.UserPaymentConfirmedRequest) (*pb.UserBookingResponse, error) {
 	// Call Coordinator service to confirm payment
 	result, err := c.codClient.PaymentConfirmed(ctx, &cpb.PaymentConfirmedRequest{
 		Email:       p.Email,
-		ReferenceID: p.ReferenceID,
-		PaymentId:   p.PaymentId,
-		UserID:      p.UserID,
-		OrderID:     p.OrderID,
+		ReferenceID: p.Reference_ID,
+		PaymentId:   p.Payment_ID,
+		UserID:      p.User_ID,
+		OrderID:     p.Order_ID,
 		Signature:   p.Signature,
 		Total:       p.Total,
 	})
@@ -45,8 +45,8 @@ func (c *UserSVC) PaymentConfirmedSVC(ctx context.Context, p *pb.UserPaymentConf
 	}
 
 	// Create and return UserBookingResponce
-	return &pb.UserBookingResponce{
+	return &pb.UserBookingResponse{
 		Status:     result.Status,
-		Booking_Id: result.Booking_Id,
+		Booking_ID: result.Booking_Id,
 	}, nil
 }
