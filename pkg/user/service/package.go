@@ -11,7 +11,7 @@ import (
 func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 	ctx := context.Background()
 	result, err := c.codClient.CoordinatorViewPackage(ctx, &cpb.View{
-		Id: p.ID,
+		ID: p.ID,
 	})
 	if err != nil {
 		return nil, err
@@ -21,30 +21,30 @@ func (c *UserSVC) ViewPackageSvc(p *pb.UserView) (*pb.UserPackage, error) {
 	for _, pkg := range result.Destinations {
 		destinations = append(destinations, &pb.UserDestination{
 			Description:      pkg.Description,
-			Destination_ID:   pkg.DestinationId,
-			Destination_Name: pkg.DestinationName,
+			Destination_ID:   pkg.Destination_ID,
+			Destination_Name: pkg.Destination_Name,
 			Image:            pkg.Image,
-			Max_Capacity:     pkg.MaxCapacity,
-			Min_Price:        int64(pkg.Minprice),
+			Max_Capacity:     pkg.Max_Capacity,
+			Min_Price:        int64(pkg.Min_Price),
 		})
 	}
 
 	category := &pb.UserCategory{
-		Category_Name: result.Category.CategoryName,
+		Category_Name: result.Category.Category_Name,
 	}
 
 	return &pb.UserPackage{
 		Package_Name:      result.Packagename,
-		Start_Location:    result.Startlocation,
-		Start_Date:        result.Startdate,
-		Start_Time:        result.Starttime,
-		End_Date:          result.Enddate,
+		Start_Location:    result.Start_Location,
+		Start_Date:        result.Start_Date,
+		Start_Time:        result.Start_Time,
+		End_Date:          result.End_Date,
 		Price:             result.Price,
 		Image:             result.Image,
-		Available_Space:   result.AvailableSpace,
-		Destination_Count: result.DestinationCount,
+		Available_Space:   result.Available_Space,
+		Destination_Count: result.Destination_Count,
 		Destination:       result.Destination,
-		Package_ID:        result.PackageId,
+		Package_ID:        result.Package_ID,
 		Description:       result.Description,
 		Category:          category,
 		Destinations:      destinations,
@@ -65,17 +65,17 @@ func (c *UserSVC) ViewPackagesSvc(p *pb.UserView) (*pb.UserPackages, error) {
 	var packages []*pb.UserPackage
 	for _, pkg := range result.Packages {
 		packages = append(packages, &pb.UserPackage{
-			Package_ID:        pkg.PackageId,
+			Package_ID:        pkg.Package_ID,
 			Destination:       pkg.Destination,
-			Destination_Count: int64(pkg.DestinationCount),
-			End_Date:          pkg.Enddate,
+			Destination_Count: int64(pkg.Destination_Count),
+			End_Date:          pkg.End_Date,
 			Image:             pkg.Image,
 			Package_Name:      pkg.Packagename,
-			Available_Space:   pkg.AvailableSpace,
+			Available_Space:   pkg.Available_Space,
 			Price:             int64(pkg.Price),
-			Start_Date:        pkg.Startdate,
-			Start_Time:        pkg.Starttime,
-			Start_Location:    pkg.Startlocation,
+			Start_Date:        pkg.Start_Date,
+			Start_Time:        pkg.Start_Time,
+			Start_Location:    pkg.Start_Location,
 			Description:       pkg.Description,
 		})
 	}
@@ -88,7 +88,7 @@ func (c *UserSVC) ViewPackagesSvc(p *pb.UserView) (*pb.UserPackages, error) {
 // ViewCatagoriesSvc retrieves available categories.
 func (c *UserSVC) ViewCatagoriesSvc(p *pb.UserView) (*pb.UserCategories, error) {
 	ctx := context.Background()
-	result, err := c.codClient.ViewCatagories(ctx, &cpb.View{
+	result, err := c.codClient.Viewcategories(ctx, &cpb.View{
 		Page: p.Page,
 	})
 	if err != nil {
@@ -96,10 +96,10 @@ func (c *UserSVC) ViewCatagoriesSvc(p *pb.UserView) (*pb.UserCategories, error) 
 	}
 
 	var categories []*pb.UserCategory
-	for _, category := range result.Catagories {
+	for _, category := range result.Categories {
 		categories = append(categories, &pb.UserCategory{
-			Category_ID:   category.CatagoryId,
-			Category_Name: category.CategoryName,
+			Category_ID:   category.Category_ID,
+			Category_Name: category.Category_Name,
 		})
 	}
 
@@ -112,13 +112,13 @@ func (c *UserSVC) ViewCatagoriesSvc(p *pb.UserView) (*pb.UserCategories, error) 
 func (c *UserSVC) FilterPackageSvc(p *pb.UserFilter) (*pb.UserPackages, error) {
 	ctx := context.Background()
 	result, err := c.codClient.FilterPackage(ctx, &cpb.Filter{
-		Status:       p.Status,
-		Page:         p.Page,
-		Departurtime: p.Departure_Time,
-		MinPrice:     p.Min_Price,
-		MaxPrice:     p.Max_Price,
-		CategoryId:   p.Category_ID,
-		OrderBy:      p.Order_By,
+		Status:         p.Status,
+		Page:           p.Page,
+		Departure_Time: p.Departure_Time,
+		Min_Price:      p.Min_Price,
+		Max_Price:      p.Max_Price,
+		Category_ID:    p.Category_ID,
+		Order_By:       p.Order_By,
 	})
 	if err != nil {
 		return nil, err
@@ -127,17 +127,17 @@ func (c *UserSVC) FilterPackageSvc(p *pb.UserFilter) (*pb.UserPackages, error) {
 	var packages []*pb.UserPackage
 	for _, pkg := range result.Packages {
 		packages = append(packages, &pb.UserPackage{
-			Package_ID:        pkg.PackageId,
+			Package_ID:        pkg.Package_ID,
 			Destination:       pkg.Destination,
-			Destination_Count: int64(pkg.DestinationCount),
-			End_Date:          pkg.Enddate,
+			Destination_Count: int64(pkg.Destination_Count),
+			End_Date:          pkg.End_Date,
 			Image:             pkg.Image,
 			Package_Name:      pkg.Packagename,
-			Available_Space:   pkg.AvailableSpace,
+			Available_Space:   pkg.Available_Space,
 			Price:             int64(pkg.Price),
-			Start_Date:        pkg.Startdate,
-			Start_Time:        pkg.Starttime,
-			Start_Location:    pkg.Startlocation,
+			Start_Date:        pkg.Start_Date,
+			Start_Time:        pkg.Start_Time,
+			Start_Location:    pkg.Start_Location,
 			Description:       pkg.Description,
 		})
 	}
@@ -151,7 +151,7 @@ func (c *UserSVC) FilterPackageSvc(p *pb.UserFilter) (*pb.UserPackages, error) {
 func (c *UserSVC) ViewFoodMenusSvc(p *pb.UserView) (*pb.UserFoodMenus, error) {
 	ctx := context.Background()
 	result, err := c.codClient.CoordinatorViewFoodMenu(ctx, &cpb.View{
-		Id:   p.ID,
+		ID:   p.ID,
 		Page: p.Page,
 	})
 	if err != nil {
@@ -159,10 +159,10 @@ func (c *UserSVC) ViewFoodMenusSvc(p *pb.UserView) (*pb.UserFoodMenus, error) {
 	}
 
 	var foodMenus []*pb.UserFoodMenu
-	for _, menu := range result.Foodmenu {
+	for _, menu := range result.FoodMenus {
 		foodMenus = append(foodMenus, &pb.UserFoodMenu{
-			Food_Menu_ID: menu.FoodMenuId,
-			Package_ID:   menu.PackageID,
+			Food_Menu_ID: menu.Food_Menu_ID,
+			Package_ID:   menu.Package_ID,
 			Breakfast:    menu.Breakfast,
 			Lunch:        menu.Lunch,
 			Dinner:       menu.Dinner,

@@ -32,21 +32,21 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 	// Iterate over traveller details and populate the slice
 	for _, dtls := range p.Traveller_Details {
 		travellerDetail := &cpb.TravellerDetails{
-			ActivityId: dtls.Activity_ID,
-			Age:        dtls.Age,
-			Gender:     dtls.Gender,
-			Name:       dtls.Name,
+			Activity_ID: dtls.Activity_ID,
+			Age:         dtls.Age,
+			Gender:      dtls.Gender,
+			Name:        dtls.Name,
 		}
 		travellerDetails = append(travellerDetails, travellerDetail)
 	}
 
 	// Call the client to add traveller details
 	resp, err := c.codClient.UserTravellerDetails(ctx, &cpb.TravellerRequest{
-		UserId:           p.User_ID,
-		TravellerDetails: travellerDetails,
-		PackageId:        p.Package_ID,
-		Email:            user.Email,
-		Username:         user.Name,
+		User_ID:           p.User_ID,
+		Traveller_Details: travellerDetails,
+		Package_ID:        p.Package_ID,
+		Email:             user.Email,
+		Username:          user.Name,
 	})
 
 	if err != nil {
@@ -56,10 +56,10 @@ func (c *UserSVC) TraverllerDetailSVC(p *pb.UserTravellerRequest) (*pb.UserTrave
 	// Return the response
 	return &pb.UserTravellerResponse{
 		Status:               resp.Status,
-		Package_Price:        resp.PackagePrice,
-		Activity_Total_Price: resp.ActivityTotalPrice,
-		Total_Price:          resp.TotalPrice,
-		Advance_Amount:       resp.AdvanceAmount,
-		Ref_ID:               resp.RefId,
+		Package_Price:        resp.Package_Price,
+		Activity_Total_Price: resp.Activity_Total_Price,
+		Total_Price:          resp.Total_Price,
+		Advance_Amount:       resp.Advance_Amount,
+		Ref_ID:               resp.Ref_ID,
 	}, nil
 }

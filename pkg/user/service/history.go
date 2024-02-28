@@ -15,7 +15,7 @@ func (c *UserSVC) ViewHistorySvc(p *pb.UserView) (*pb.UserHistories, error) {
 
 	// Call Coordinator service to get booking history
 	result, err := c.codClient.ViewHistory(ctx, &cpb.View{
-		Id:     p.ID,
+		ID:     p.ID,
 		Page:   p.Page,
 		Status: "false",
 	})
@@ -27,16 +27,16 @@ func (c *UserSVC) ViewHistorySvc(p *pb.UserView) (*pb.UserHistories, error) {
 	var history []*pb.UserHistory
 	for _, hstry := range result.History {
 		userHistory := &pb.UserHistory{
-			ID:              hstry.Id,
-			Payment_Mode:     hstry.PaymentMode,
-			Booking_Status:   hstry.BookingStatus,
-			Cancelled_Status: hstry.CancelledStatus,
-			Total_Price:      int64(hstry.TotalPrice),
-			User_ID:          int64(hstry.UserId),
-			Booking_ID:       hstry.BookingId,
-			Book_Date:        hstry.BookDate,
-			Start_Date:       hstry.StartDate,
-			Paid_Amount:      hstry.PaidAmount,
+			ID:               hstry.ID,
+			Payment_Mode:     hstry.Payment_Mode,
+			Booking_Status:   hstry.Booking_Status,
+			Cancelled_Status: hstry.Cancelled_Status,
+			Total_Price:      int64(hstry.Total_Price),
+			User_ID:          int64(hstry.User_ID),
+			Booking_ID:       hstry.Booking_ID,
+			Book_Date:        hstry.Book_Date,
+			Start_Date:       hstry.Start_Date,
+			Paid_Amount:      hstry.Paid_Amount,
 		}
 		history = append(history, userHistory)
 	}
@@ -54,7 +54,7 @@ func (c *UserSVC) ViewBookingSvc(p *pb.UserView) (*pb.UserHistory, error) {
 
 	// Call Coordinator service to get booking details
 	result, err := c.codClient.ViewBooking(ctx, &cpb.View{
-		Id: p.ID,
+		ID: p.ID,
 	})
 	if err != nil {
 		return nil, err
@@ -73,16 +73,16 @@ func (c *UserSVC) ViewBookingSvc(p *pb.UserView) (*pb.UserHistory, error) {
 
 	// Create and return UserHistory response
 	return &pb.UserHistory{
-		ID:              result.Id,
-		Payment_Mode:     result.PaymentMode,
-		Booking_Status:   result.BookingStatus,
-		Cancelled_Status: result.CancelledStatus,
-		Total_Price:      int64(result.TotalPrice),
-		User_ID:          int64(result.UserId),
-		Booking_ID:      result.BookDate,
-		Start_Date:      result.StartDate,
-		Travellers:      travellers,
-		Paid_Amount:     result.PaidAmount,
+		ID:               result.ID,
+		Payment_Mode:     result.Payment_Mode,
+		Booking_Status:   result.Booking_Status,
+		Cancelled_Status: result.Cancelled_Status,
+		Total_Price:      int64(result.Total_Price),
+		User_ID:          int64(result.User_ID),
+		Booking_ID:       result.Book_Date,
+		Start_Date:       result.Start_Date,
+		Travellers:       travellers,
+		Paid_Amount:      result.Paid_Amount,
 	}, nil
 }
 
@@ -99,7 +99,7 @@ func (c *UserSVC) CancelBookingSvc(p *pb.UserView) (*pb.UserResponse, error) {
 
 	// Call Coordinator service to cancel booking
 	result, err := c.codClient.CancelBooking(ctx, &cpb.View{
-		Id: p.ID,
+		ID: p.ID,
 	})
 	if err != nil {
 		return nil, err

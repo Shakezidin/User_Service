@@ -17,15 +17,15 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 
 	// Call the coordinator service to search for packages
 	result, err := c.codClient.PackageSearch(ctx, &cpb.Search{
-		CatagoryId:       p.Category_ID,
-		Travelercount:    p.Traveler_Count,
-		PickupPlace:      p.Pickup_Place,
-		Finaldestination: p.Final_Destination,
-		Date:             p.Date,
-		Page:             p.Page,
-		Enddate:          p.End_Date,
-		MaxDestination:   p.Max_Destination,
-		Destination:      destinations,
+		Category_ID:       p.Category_ID,
+		Traveler_Count:    p.Traveler_Count,
+		Pickup_Place:      p.Pickup_Place,
+		Final_Destination: p.Final_Destination,
+		Date:              p.Date,
+		Page:              p.Page,
+		End_Date:          p.End_Date,
+		Max_Destination:   p.Max_Destination,
+		Destination:       destinations,
 	})
 	if err != nil {
 		return nil, err
@@ -35,19 +35,19 @@ func (c *UserSVC) SearchPackageSvc(p *pb.UserSearch) (*pb.UserPackages, error) {
 	var pkgs []*pb.UserPackage
 	for _, pakg := range result.Packages {
 		pkgs = append(pkgs, &pb.UserPackage{
-			Package_ID:        pakg.PackageId,
+			Package_ID:        pakg.Package_ID,
 			Destination:       pakg.Destination,
-			Destination_Count: int64(pakg.DestinationCount),
-			End_Date:          pakg.Enddate,
+			Destination_Count: int64(pakg.Destination_Count),
+			End_Date:          pakg.End_Date,
 			Image:             pakg.Image,
 			Package_Name:      pakg.Packagename,
-			Available_Space:   pakg.AvailableSpace,
+			Available_Space:   pakg.Available_Space,
 			Price:             int64(pakg.Price),
-			Start_Date:        pakg.Startdate,
-			Start_Time:        pakg.Starttime,
-			Start_Location:    pakg.Startlocation,
+			Start_Date:        pakg.Start_Date,
+			Start_Time:        pakg.Start_Time,
+			Start_Location:    pakg.Start_Location,
 			Description:       pakg.Description,
-			Coordinator_ID:    pakg.CoorinatorId,
+			Coordinator_ID:    pakg.Coordinator_ID,
 		})
 	}
 
