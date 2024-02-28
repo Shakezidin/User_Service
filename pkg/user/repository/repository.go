@@ -56,8 +56,24 @@ func (c *UserRepo) FindUserById(id uint) (*DOM.User, error) {
 }
 
 func (c *UserRepo) UpdateUser(user *DOM.User) error {
-	if err := c.db.Save(user).Error; err != nil {
+	if err := c.db.Save(&user).Error; err != nil {
 		return err
 	}
 	return nil
+}
+
+func (c *UserRepo) UserCount() int64 {
+	var count int64
+	if err := c.db.Model(&DOM.User{}).Count(&count).Error; err != nil {
+		return 0
+	}
+	return count
+}
+
+func (c *UserRepo) FindUsers(offset, limit int) ([]*DOM.User, error) {
+	var users []*DOM.User
+	if err := c.db.Offset(offset).Limit(limit).Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
 }

@@ -7,7 +7,7 @@ import (
 
 	"github.com/Shakezidin/config"
 	"github.com/Shakezidin/pkg/user/handler"
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 	"google.golang.org/grpc"
 )
 

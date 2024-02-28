@@ -2,70 +2,76 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	cpb "github.com/Shakezidin/pkg/user/client/pb"
-	pb "github.com/Shakezidin/pkg/user/pb"
+	pb "github.com/Shakezidin/pkg/user/userpb"
 )
 
+// ViewDestinationSvc handles the user request to view destination.
 func (c *UserSVC) ViewDestinationSvc(p *pb.UserView) (*pb.UserDestination, error) {
-	var ctxt = context.Background()
-	result, err := c.codClient.CoordinatorViewDestination(ctxt, &cpb.View{
-		Id: p.Id,
+	// Create a new context
+	ctx := context.Background()
+
+	// Call Coordinator service to get destination details
+	result, err := c.codClient.CoordinatorViewDestination(ctx, &cpb.View{
+		ID: p.ID,
 	})
 	if err != nil {
-		fmt.Println("fetching available packages error")
 		return nil, err
-	} else {
-		var actvty []*pb.UserActivity
-		for _, act := range result.Activity {
-			var actv pb.UserActivity
-			actv.Description = act.Description
-			actv.ActivityId = act.ActivityId
-			actv.Activityname = act.Activityname
-			actv.Amount = act.Amount
-			actv.Date = actv.Date
-			actv.DestinationId = actv.DestinationId
-			actv.Location = actv.Location
-			actv.Time = actv.Time
-
-			actvty = append(actvty, &actv)
-
-		}
-
-		return &pb.UserDestination{
-			DestinationName: result.DestinationName,
-			DestinationId:   result.DestinationId,
-			Description:     result.Description,
-			MaxCapacity:     result.MaxCapacity,
-			PackageID:       result.PackageID,
-			Minprice:        result.Minprice,
-			Image:           result.Image,
-			Activity:        actvty,
-		}, nil
 	}
+
+	// Map Coordinator response to UserDestination
+	var activities []*pb.UserActivity
+	for _, act := range result.Activity {
+		activity := pb.UserActivity{
+			Description:    act.Description,
+			Activity_ID:    act.Activity_ID,
+			Activity_Name:  act.Activity_Name,
+			Amount:         act.Amount,
+			Date:           act.Date,
+			Destination_ID: act.Destination_ID,
+			Location:       act.Location,
+			Time:           act.Time,
+		}
+		activities = append(activities, &activity)
+	}
+
+	// Create and return UserDestination response
+	return &pb.UserDestination{
+		Destination_Name: result.Destination_Name,
+		Destination_ID:   result.Destination_ID,
+		Description:      result.Description,
+		Max_Capacity:     result.Max_Capacity,
+		Package_ID:       result.Package_ID,
+		Min_Price:        result.Min_Price,
+		Image:            result.Image,
+		Activity:         activities,
+	}, nil
 }
 
+// ViewActivitySvc handles the user request to view activity.
 func (c *UserSVC) ViewActivitySvc(p *pb.UserView) (*pb.UserActivity, error) {
-	var ctxt = context.Background()
-	result, err := c.codClient.CoordinatorViewActivity(ctxt, &cpb.View{
-		Id: p.Id,
+	// Create a new context
+	ctx := context.Background()
+
+	// Call Coordinator service to get activity details
+	result, err := c.codClient.CoordinatorViewActivity(ctx, &cpb.View{
+		ID: p.ID,
 	})
 	if err != nil {
-		fmt.Println("fetching activity error")
 		return nil, err
 	}
 
+	// Create and return UserActivity response
 	return &pb.UserActivity{
-		ActivityId:    result.ActivityId,
-		Activityname:  result.Activityname,
-		Description:   result.Description,
-		Location:      result.Location,
-		ActivityType:  result.ActivityType,
-		Amount:        result.Amount,
-		Date:          result.Date,
-		Time:          result.Time,
-		DestinationId: result.DestinationId,
+		Activity_ID:    result.Activity_ID,
+		Activity_Name:  result.Activity_Name,
+		Description:    result.Description,
+		Location:       result.Location,
+		Activity_Type:  result.Activity_Type,
+		Amount:         result.Amount,
+		Date:           result.Date,
+		Time:           result.Time,
+		Destination_ID: result.Destination_ID,
 	}, nil
-
 }

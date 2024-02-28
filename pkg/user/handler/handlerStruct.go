@@ -1,7 +1,7 @@
 package handler
 
 import (
-	cpb "github.com/Shakezidin/pkg/user/pb"
+	cpb "github.com/Shakezidin/pkg/user/userpb"
 	SVCinter "github.com/Shakezidin/pkg/user/service/interface"
 )
 
